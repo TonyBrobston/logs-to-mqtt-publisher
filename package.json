@@ -1,0 +1,57 @@
+{
+  "name": "logs-to-mqtt-publisher",
+  "version": "1.11.1",
+  "description": "A server-side JavaScript tool that converts log statements to topics and publishes them to a mqtt broker.",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TonyBrobston/logs-to-mqtt-publisher"
+  },
+  "scripts": {
+    "build": "rm -rf lib && tsc",
+    "version": "yarn build && git add .",
+    "postversion": "git push && git push --tags",
+    "coverage": "jest --coverage",
+    "lint:ts": "tslint --fix -c tslint.json 'src/**/*.ts' 'tests/**/*.test.ts'",
+    "test": "yarn lint:ts && yarn coverage",
+    "unit": "npx jest"
+  },
+  "keywords": [
+    "javascript",
+    "mqtt",
+    "broker",
+    "mqtt-broker",
+    "log",
+    "log-file",
+    "file",
+    "gif",
+    "png",
+    "server",
+    "server-side",
+    "server side",
+    "node"
+  ],
+  "author": "Tony Brobston",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@types/chance": "^1.0.6",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.4",
+    "chance": "^1.0.18",
+    "commitlint": "^8.2.0",
+    "husky": "^3.0.9",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "projectName": "logs-to-mqtt-publisher",
+  "projectOwner": "TonyBrobston",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [],
+  "contributorsPerLine": 7
+}

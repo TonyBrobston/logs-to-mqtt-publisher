@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - 10.13.0
+before_install:
+  - pip install --user codecov
+after_success:
+  - codecov --file .coverage/lcov.info --disable search
+install:
+  - yarn
+script:
+  - yarn test
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: sh .scripts/buildAndDeploy.sh
+  on:
+    branch: master
+    tags: true
