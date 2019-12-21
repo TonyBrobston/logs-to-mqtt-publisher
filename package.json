@@ -9,12 +9,13 @@
   },
   "scripts": {
     "build": "rm -rf lib && tsc",
-    "version": "yarn build && git add .",
-    "postversion": "git push && git push --tags",
     "coverage": "jest --coverage",
     "lint:ts": "tslint --fix -c tslint.json 'src/**/*.ts' 'tests/**/*.test.ts'",
+    "postversion": "git push && git push --tags",
+    "start": "node lib/index.js",
     "test": "yarn lint:ts && yarn coverage",
-    "unit": "npx jest"
+    "unit": "npx jest",
+    "version": "yarn build && git add ."
   },
   "keywords": [
     "javascript",
@@ -40,14 +41,18 @@
     "@types/chance": "^1.0.6",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.4",
+    "async": "^3.1.0",
     "chance": "^1.0.18",
+    "chokidar": "^3.3.1",
     "commitlint": "^8.2.0",
     "husky": "^3.0.9",
     "jest": "^24.9.0",
+    "mqtt": "^3.0.0",
+    "read-last-lines": "^1.7.1",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
-    "typescript": "^3.6.2"
+    "typescript": "3.3.1"
   },
   "husky": {
     "hooks": {
