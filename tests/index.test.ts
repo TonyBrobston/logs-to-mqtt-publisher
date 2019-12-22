@@ -1,6 +1,6 @@
 import {Chance} from 'chance';
-const {connectAsync} = require('async-mqtt');
-const {watch} = require('chokidar');
+import {connectAsync} from 'async-mqtt';
+import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
 import {start} from '../src/index';
 
@@ -23,7 +23,7 @@ describe('index', () => {
         const client = {
             publish
         };
-        connectAsync.mockResolvedValue(client);
+        (connectAsync as jest.Mock).mockResolvedValue(client);
         const path = chance.string();
         const on = jest.fn().mockImplementation((event, onCallback) => {
             onCallback(path);
@@ -31,7 +31,7 @@ describe('index', () => {
         const watcher = {
             on
         };
-        watch.mockReturnValue(watcher);
+        (watch as jest.Mock).mockReturnValue(watcher);
         const lines = chance.string();
         read.mockResolvedValue(lines);
 
