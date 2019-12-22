@@ -4,7 +4,7 @@ import {read} from 'read-last-lines';
 
 export const start = async (): Promise<void> => {
     const host = process.env.MQTT_HOST;
-    const port = process.env.MQTT_PORT ? process.env.MQTT_PORT : '1883';
+    const port = process.env.MQTT_PORT;
     const {publish} = await connectAsync(`tcp://${host}:${port}`);
     const filePath = process.env.FILE_PATH;
 
@@ -14,11 +14,7 @@ export const start = async (): Promise<void> => {
             const {topic, message} = parse(lines);
             await publish(topic, message);
         });
-    }// else {
-    //    const errorMessage = 'process.env.FILE_PATH is not valid.';
-    //    console.log(errorMessage);
-    //    throw new Error(errorMessage);
-    //}
+    }
 }
 
 const parse = (lines: string) => {
