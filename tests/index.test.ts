@@ -19,7 +19,7 @@ describe('index', () => {
         process.env.MQTT_HOST = mqttHost;
         const mqttPort = chance.string();
         process.env.MQTT_PORT = mqttPort;
-        const logFileRegex = '/camera|event|message/g';
+        const logFileRegex = '/event|camera|message/g';
         process.env.LOG_FILE_REGEX = logFileRegex;
         const publish = jest.fn();
         const client = {
@@ -34,8 +34,8 @@ describe('index', () => {
             on
         };
         (watch as jest.Mock).mockReturnValue(watcher);
-        const lines = 'camera,event,message';
-        read.mockResolvedValue(lines);
+        const line = 'event,camera,message';
+        read.mockResolvedValue(line);
 
         await start();
 
@@ -50,13 +50,13 @@ describe('index', () => {
     });
 
     it('should parse', () => {
-        const event = 'Motion';
+        const event = 'motion';
         const camera = 'House Northeast';
         const expectedMessage = 'start';
-        const logLine = `1577042817.781 2019-12-22 13:26:57.781/CST: INFO   [uv.analytics.motion] [AnalyticsService] [FCECDAD8B870|${camera}] ${event}Event type:${expectedMessage} event:28345 clock:10377014318 in AnalyticsEvtBus-11`;
-        const regex = /\[FCECDAD8B870\|House Northeast\]|MotionEvent|type:start|stop/g;
+        const line = `1577042817.781 2019-12-22 13:26:57.781/CST: INFO   [uv.analytics.${event}] [AnalyticsService] [FCECDAD8B870|${camera}] MotionEvent type:${expectedMessage} event:28345 clock:10377014318 in AnalyticsEvtBus-11`;
+        const regex = /motion|House Northeast|start/g;
 
-        const {topic, message} = parse(logLine, regex);
+        const {topic, message} = parse(line, regex);
 
         expect(topic).toBe(`${event}/${camera}`);
         expect(message).toBe(expectedMessage);
