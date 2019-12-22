@@ -1,17 +1,18 @@
-import Chance from 'chance';
-import {watch} from 'chokidar';
+import {Chance} from 'chance';
+const {connectAsync} = require('async-mqtt');
+const {watch} = require('chokidar');
 import {read} from 'read-last-lines';
-import {connect} from 'async-mqtt';
 import {start} from '../src/index';
 
+jest.mock('async-mqtt');
 jest.mock('chokidar');
-jest.mock('read-last-times');
+jest.mock('read-last-lines');
 jest.mock('mqtt');
 
 const chance = new Chance();
 
 describe('index', () => {
-    it('should return hello world', async () => {
+    it('should start', async () => {
         const filePath = chance.string();
         process.env.FILE_PATH = filePath;
         const mqttHost = chance.string();
@@ -21,8 +22,8 @@ describe('index', () => {
         const publish = jest.fn();
         const client = {
             publish
-        }
-        connect.mockReturnValue(client);
+        };
+        connectAsync.mockResolvedValue(client);
         const path = chance.string();
         const on = jest.fn().mockImplementation((event, onCallback) => {
             onCallback(path);
@@ -36,14 +37,13 @@ describe('index', () => {
 
         await start();
 
-        expect(watch)
-            .toHaveBeenCalledTimes(1)
-            .toHaveBeenCalledWith(filePath.toString());
-        expect(on)
-            .toHaveBeenCalledTimes(1)
-            .toHaveBeenCalledWith('chance', expect.any(Function));
-        expect(read)
-            .toHaveBeenCalledTimes(1)
-            .toHaveBeenCalledWith(path, 1);
+        expect(watch).toHaveBeenCalledTimes(1);
+        expect(watch).toHaveBeenCalledWith(filePath.toString());
+        expect(on).toHaveBeenCalledTimes(1);
+        expect(on).toHaveBeenCalledWith('change', expect.any(Function));
+        expect(read).toHaveBeenCalledTimes(1);
+        expect(read).toHaveBeenCalledWith(path, 1);
+        expect(publish).toHaveBeenCalledTimes(1);
+        expect(publish).toHaveBeenCalledWith('someTopic', 'someMessage');
     });
 });

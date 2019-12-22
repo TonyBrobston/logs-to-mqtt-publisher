@@ -1,18 +1,18 @@
+import {connectAsync} from 'async-mqtt';
 import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
-import {connect} from 'async-mqtt';
 
 export const start = async (): Promise<void> => {
-    const filePath = process.env.FILE_PATH;
     const host = process.env.MQTT_HOST;
     const port = process.env.MQTT_PORT ? process.env.MQTT_PORT : '1883';
-    const client = connect(`tcp://${host}:${port}`);
+    const {publish} = await connectAsync(`tcp://${host}:${port}`);
+    const filePath = process.env.FILE_PATH;
 
     if (filePath) {
-        watch(filePath.toString()).on('change', async (path) => {
+        await watch(filePath.toString()).on('change', async (path) => {
             const lines = await read(path, 1);
             const {topic, message} = parse(lines);
-            await client.publish(topic, message);
+            await publish(topic, message);
         });
     }// else {
     //    const errorMessage = 'process.env.FILE_PATH is not valid.';
@@ -21,7 +21,7 @@ export const start = async (): Promise<void> => {
     //}
 }
 
-const parse = () => {
+const parse = (lines: string) => {
     return {
         topic: 'someTopic',
         message: 'someMessage'
