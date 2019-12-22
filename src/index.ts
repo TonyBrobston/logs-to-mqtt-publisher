@@ -24,11 +24,11 @@ export const start = async (): Promise<void> => {
 export const parse = (line: string, regex: RegExp) => {
     const found = line.match(regex);
     if (found) {
-        const event = found[0];
-        const camera = found[1];
+        const parentTopic = found[0];
+        const childTopic = found[1];
         const message = found[2];
         return {
-            topic: `${event}/${camera}`,
+            topic: `${parentTopic}/${childTopic}`,
             message
         }
     }
