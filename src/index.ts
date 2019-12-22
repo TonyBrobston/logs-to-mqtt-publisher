@@ -2,6 +2,8 @@ import {connectAsync} from 'async-mqtt';
 import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
 
+import {parse} from './services/logService';
+
 export const start = async (): Promise<void> => {
     const logFilePath = process.env.LOG_FILE_PATH;
     const logFileRegex = process.env.LOG_FILE_REGEX;
@@ -21,16 +23,3 @@ export const start = async (): Promise<void> => {
     }
 }
 
-export const parse = (line: string, regex: RegExp) => {
-    const found = line.match(regex);
-    if (found) {
-        const parentTopic = found[0];
-        const childTopic = found[1];
-        const message = found[2];
-        return {
-            topic: `${parentTopic}/${childTopic}`,
-            message
-        }
-    }
-    return {};
-}

@@ -2,7 +2,7 @@ import {Chance} from 'chance';
 import {connectAsync} from 'async-mqtt';
 import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
-import {start, parse} from '../src/index';
+import {start} from '../src/index';
 
 jest.mock('async-mqtt');
 jest.mock('chokidar');
@@ -47,18 +47,5 @@ describe('index', () => {
         expect(read).toHaveBeenCalledWith(path, 1);
         expect(publish).toHaveBeenCalledTimes(1);
         expect(publish).toHaveBeenCalledWith('parentTopic/childTopic', 'message');
-    });
-
-    it('should parse', () => {
-        const parentTopic = 'motion';
-        const childTopic = 'North Camera';
-        const expectedMessage = 'start';
-        const line = `1577042817.781 2019-12-22 13:26:57.781/CST: INFO   [uv.analytics.${parentTopic}] [AnalyticsService] [FCECDAD8B870|${childTopic}] MotionEvent type:${expectedMessage} event:28345 clock:10377014318 in AnalyticsEvtBus-11`;
-        const regex = /(?<=\[uv.analytics.)[a-z]+(?=\])|(?<=\[[0-9A-Z]{12}\|).*(?=\])|(?<=type:)[a-zA-Z0-9]+/g;
-
-        const {topic, message} = parse(line, regex);
-
-        expect(topic).toBe(`${parentTopic}/${childTopic}`);
-        expect(message).toBe(expectedMessage);
     });
 });
