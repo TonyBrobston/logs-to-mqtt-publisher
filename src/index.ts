@@ -4,12 +4,10 @@ import {read} from 'read-last-lines';
 const filePath = process.env.FILE_PATH;
 
 if (filePath) {
-    watch(filePath.toString()).on('all', (event, path) => {
-        if (event === 'change') {
-            read(path, 1).then((lines: string) => {
-                console.log(lines)
-            });
-        }
+    watch(filePath.toString()).on('change', (path) => {
+        read(path, 1).then((lines: string) => {
+            console.log(lines)
+        });
     });
 } else {
     const errorMessage = 'process.env.FILE_PATH is not valid.';
