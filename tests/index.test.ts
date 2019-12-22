@@ -51,10 +51,10 @@ describe('index', () => {
 
     it('should parse', () => {
         const event = 'motion';
-        const camera = 'House Northeast';
+        const camera = 'North Camera';
         const expectedMessage = 'start';
         const line = `1577042817.781 2019-12-22 13:26:57.781/CST: INFO   [uv.analytics.${event}] [AnalyticsService] [FCECDAD8B870|${camera}] MotionEvent type:${expectedMessage} event:28345 clock:10377014318 in AnalyticsEvtBus-11`;
-        const regex = /motion|House Northeast|start/g;
+        const regex = /(?<=\[uv.analytics.)[a-z]+(?=\])|(?<=\[[0-9A-Z]{12}\|).*(?=\])|(?<=type:)[a-zA-Z0-9]+/g;
 
         const {topic, message} = parse(line, regex);
 
