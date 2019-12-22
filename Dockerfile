@@ -4,6 +4,5 @@ COPY /src ./src
 COPY /package.json ./
 COPY /tsconfig.json ./
 RUN yarn
-RUN ls
 RUN yarn build
 CMD yarn start
