@@ -1,4 +1,4 @@
 export interface MqttPayload {
-    topic: string;
-    message: string;
+    topic?: string;
+    message?: string;
 }
