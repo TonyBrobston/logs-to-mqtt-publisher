@@ -12,7 +12,7 @@ describe('optionService', () => {
             {
                 expectedOptions: {
                     logFilePath: '',
-                    logFileRegex: '',
+                    logFileRegex: '//',
                     mqttHost: 'localhost',
                     mqttPort: '1883',
                     mqttUsername: '',
