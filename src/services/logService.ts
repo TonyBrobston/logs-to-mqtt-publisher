@@ -9,5 +9,5 @@ export const parse = (line: string, regex: RegExp) => {
             message
         }
     }
-    return {};
+    return undefined;
 }

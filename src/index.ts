@@ -19,8 +19,9 @@ export const start = async (inputOptions: InputOptions): Promise<void> => {
     const regex = new RegExp(logFileRegexSplit[1], logFileRegexSplit[2])
     await watch(logFilePath.toString()).on('change', async (path) => {
         const line = await read(path, 1);
-        const {topic, message} = parse(line, regex);
-        if (topic && message) {
+        const payload = parse(line, regex);
+        if (payload) {
+            const {topic, message} = payload;
             await publish(topic, message);
         }
     });
