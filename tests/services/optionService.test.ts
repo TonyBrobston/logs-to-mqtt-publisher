@@ -12,7 +12,7 @@ describe('optionService', () => {
             {
                 expectedOptions: {
                     logFilePath: '',
-                    logFileRegex: '//',
+                    logFileRegex: new RegExp(''),
                     mqttHost: 'localhost',
                     mqttPort: '1883',
                     mqttUsername: '',
@@ -24,7 +24,7 @@ describe('optionService', () => {
             {
                 expectedOptions: {
                     logFilePath: '/var/log/',
-                    logFileRegex: '/blah/g',
+                    logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPort: '1337',
                     mqttUsername: 'root',
@@ -43,7 +43,7 @@ describe('optionService', () => {
             {
                 expectedOptions: {
                     logFilePath: '/var/log/',
-                    logFileRegex: '/blah/g',
+                    logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPort: '1337',
                     mqttUsername: '',
@@ -76,7 +76,7 @@ describe('optionService', () => {
         it('should choose environment variables over default', () => {
             const logFilePath = chance.string();
             process.env.LOG_FILE_PATH = logFilePath;
-            const logFileRegex = chance.string();
+            const logFileRegex = '/blah/g';
             process.env.LOG_FILE_REGEX = logFileRegex;
             const mqttHost = chance.string();
             process.env.MQTT_HOST = mqttHost;
@@ -87,13 +87,19 @@ describe('optionService', () => {
             const mqttPassword = chance.string();
             process.env.MQTT_PASSWORD = mqttPassword;
             const inputOptions = {
-            };
+                logFilePath: '/var/log/',
+                logFileRegex: '/blah/g',
+                mqttHost: '127.0.0.1',
+                mqttPort: '1337',
+                mqttUsername: 'root',
+                mqttPassword: 'password',
+            } as InputOptions;
 
             const mergedOptions = override(inputOptions);
 
             const expectedOptions = {
                 logFilePath,
-                logFileRegex,
+                logFileRegex: new RegExp('blah', 'g'),
                 mqttHost,
                 mqttPort,
                 mqttUsername,
