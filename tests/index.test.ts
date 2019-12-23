@@ -1,8 +1,9 @@
-import {Chance} from 'chance';
 import {connectAsync} from 'async-mqtt';
+import {Chance} from 'chance';
 import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
 import {start} from '../src/index';
+import {MqttPayload} from '../src/types/MqttPayload';
 
 jest.mock('async-mqtt');
 jest.mock('chokidar');
@@ -20,19 +21,19 @@ describe('index', () => {
         logFilePath,
         logFileRegex,
         mqttHost,
-        mqttPort
+        mqttPort,
     };
     const publish = jest.fn();
     const client = {
-        publish
+        publish,
     };
     (connectAsync as jest.Mock).mockResolvedValue(client);
     const path = chance.string();
-    const on = jest.fn().mockImplementation((topic, onCallback) => {
+    const on = jest.fn().mockImplementation((payload: MqttPayload, onCallback: Function) => {
         onCallback(path);
     });
     const watcher = {
-        on
+        on,
     };
     (watch as jest.Mock).mockReturnValue(watcher);
     const line = 'parentTopic,childTopic,message';

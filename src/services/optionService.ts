@@ -13,9 +13,9 @@ export const override = ({
         logFilePath: determineLogFilePath(logFilePath),
         logFileRegex: determineLogFileRegex(logFileRegex),
         mqttHost: determineMqttHost(mqttHost),
+        mqttPassword: determineMqttPassword(mqttPassword),
         mqttPort: determineMqttPort(mqttPort),
         mqttUsername: determineMqttUsername(mqttUsername),
-        mqttPassword: determineMqttPassword(mqttPassword),
     };
 };
 
@@ -49,6 +49,16 @@ const determineMqttHost = (mqttHost?: string): string => {
     return 'localhost';
 };
 
+const determineMqttPassword = (mqttPassword?: string): string => {
+    if (process.env.MQTT_PASSWORD) {
+        return process.env.MQTT_PASSWORD;
+    } else if (mqttPassword) {
+        return mqttPassword;
+    }
+
+    return '';
+};
+
 const determineMqttPort = (mqttPort?: string): string => {
     if (process.env.MQTT_PORT) {
         return process.env.MQTT_PORT;
@@ -64,16 +74,6 @@ const determineMqttUsername = (mqttUsername?: string): string => {
         return process.env.MQTT_USERNAME;
     } else if (mqttUsername) {
         return mqttUsername;
-    }
-
-    return '';
-};
-
-const determineMqttPassword = (mqttPassword?: string): string => {
-    if (process.env.MQTT_PASSWORD) {
-        return process.env.MQTT_PASSWORD;
-    } else if (mqttPassword) {
-        return mqttPassword;
     }
 
     return '';

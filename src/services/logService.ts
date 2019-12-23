@@ -1,16 +1,18 @@
-export const parse = (line: string, regex: RegExp) => {
+import {MqttPayload} from './../types/MqttPayload';
+
+export const parse = (line: string, regex: RegExp): MqttPayload|undefined => {
     const found = line.match(regex);
 
     if (found) {
+        const message = found[2];
         const parentTopic = found[0];
         const childTopic = found[1];
-        const message = found[2];
 
         return {
+            message,
             topic: `${parentTopic}/${childTopic}`,
-            message
-        }
+        };
     }
 
     return undefined;
-}
+};

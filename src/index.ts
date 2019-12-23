@@ -4,8 +4,8 @@ import {read} from 'read-last-lines';
 
 import {InputOptions} from './types/InputOptions';
 
-import {override} from './services/optionService';
 import {parse} from './services/logService';
+import {override} from './services/optionService';
 
 export const start = async (inputOptions: InputOptions): Promise<void> => {
     const {
@@ -16,7 +16,7 @@ export const start = async (inputOptions: InputOptions): Promise<void> => {
     } = override(inputOptions);
     const {publish} = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
 
-    await watch(logFilePath.toString()).on('change', async (path) => {
+    await watch(logFilePath).on('change', async (path: string): Promise<void> => {
         const line = await read(path, 1);
         const payload = parse(line, logFileRegex);
 
@@ -26,5 +26,4 @@ export const start = async (inputOptions: InputOptions): Promise<void> => {
             await publish(topic, message);
         }
     });
-}
-
+};
