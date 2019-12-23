@@ -15,4 +15,13 @@ describe('log service', () => {
         expect(topic).toBe(`${parentTopic}/${childTopic}`);
         expect(message).toBe(expectedMessage);
     });
+
+    it('should fail to parse', () => {
+        const line = '';
+        const regex = /foo/g;
+
+        const payload: MqttPayload = parse(line, regex);
+
+        expect(payload).toEqual({});
+    });
 });
