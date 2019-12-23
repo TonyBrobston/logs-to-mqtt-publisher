@@ -16,7 +16,7 @@ export const start = async (inputOptions: InputOptions): Promise<void> => {
         mqttHost,
         mqttPort,
     }: Options = override(inputOptions);
-    const {publish} = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
+    const {publish}: any = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
 
     await watch(logFilePath).on('change', async (path: string): Promise<void> => {
         const line = await read(path, 1);

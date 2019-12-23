@@ -29,7 +29,7 @@ describe('index', () => {
     };
     (connectAsync as jest.Mock).mockResolvedValue(client);
     const path = chance.string();
-    const on = jest.fn().mockImplementation((payload: MqttPayload, onCallback) => {
+    const on = jest.fn().mockImplementation((payload: MqttPayload, onCallback: Promise<void>) => {
         onCallback(path);
     });
     const watcher = {
