@@ -1,7 +1,7 @@
 import {Chance} from 'chance';
 
 import {override} from '../../src/services/optionService';
-import {InputOptions} from '../../src/types/InputOptions';
+import {InputOptions} from '../../src/types/Options';
 import {Options} from '../../src/types/Options';
 
 const chance = new Chance();

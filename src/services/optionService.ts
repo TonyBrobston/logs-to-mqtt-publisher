@@ -1,4 +1,4 @@
-import {InputOptions} from '../types/InputOptions';
+import {InputOptions} from '../types/Options';
 import {Options} from '../types/Options';
 
 export const override = ({

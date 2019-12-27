@@ -2,7 +2,7 @@ import {connectAsync} from 'async-mqtt';
 import {watch} from 'chokidar';
 import {read} from 'read-last-lines';
 
-import {InputOptions} from './types/InputOptions';
+import {InputOptions} from './types/Options';
 import {MqttPayload} from './types/MqttPayload';
 import {Options} from './types/Options';
 
