@@ -11,14 +11,15 @@ describe('optionService', () => {
         const scenarios = [
             {
                 expectedOptions: {
-                    logFilePath: '',
+                    logFilePath: '/',
                     logFileRegex: new RegExp(''),
                     mqttHost: 'localhost',
-                    mqttPassword: '',
                     mqttPort: '1883',
-                    mqttUsername: '',
                 } as Options,
-                inputOptions: {} as InputOptions,
+                inputOptions: {
+                    logFilePath: '/',
+                    logFileRegex: new RegExp(''),
+                } as InputOptions,
                 name: 'should not override any inputOptions',
             },
             {
@@ -32,7 +33,7 @@ describe('optionService', () => {
                 } as Options,
                 inputOptions: {
                     logFilePath: '/var/log/',
-                    logFileRegex: '/blah/g',
+                    logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPassword: 'password',
                     mqttPort: '1337',
@@ -45,13 +46,11 @@ describe('optionService', () => {
                     logFilePath: '/var/log/',
                     logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
-                    mqttPassword: '',
                     mqttPort: '1337',
-                    mqttUsername: '',
                 } as Options,
                 inputOptions: {
                     logFilePath: '/var/log/',
-                    logFileRegex: '/blah/g',
+                    logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPort: '1337',
                 } as InputOptions,
@@ -69,43 +68,6 @@ describe('optionService', () => {
 
                 expect(mergedOptions).toEqual(scenario.expectedOptions);
             });
-        });
-    });
-
-    describe('set through environment variables', () => {
-        it('should choose environment variables over default', () => {
-            const logFilePath = chance.string();
-            process.env.LOG_FILE_PATH = logFilePath;
-            const logFileRegex = '/blah/g';
-            process.env.LOG_FILE_REGEX = logFileRegex;
-            const mqttHost = chance.string();
-            process.env.MQTT_HOST = mqttHost;
-            const mqttPassword = chance.string();
-            process.env.MQTT_PASSWORD = mqttPassword;
-            const mqttPort = chance.string();
-            process.env.MQTT_PORT = mqttPort;
-            const mqttUsername = chance.string();
-            process.env.MQTT_USERNAME = mqttUsername;
-            const inputOptions = {
-                logFilePath: '/var/log/',
-                logFileRegex: '/blah/g',
-                mqttHost: '127.0.0.1',
-                mqttPassword: 'password',
-                mqttPort: '1337',
-                mqttUsername: 'root',
-            } as InputOptions;
-
-            const mergedOptions = override(inputOptions);
-
-            const expectedOptions = {
-                logFilePath,
-                logFileRegex: new RegExp('blah', 'g'),
-                mqttHost,
-                mqttPassword,
-                mqttPort,
-                mqttUsername,
-            };
-            expect(mergedOptions).toEqual(expectedOptions);
         });
     });
 });

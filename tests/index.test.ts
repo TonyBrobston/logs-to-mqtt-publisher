@@ -14,7 +14,7 @@ const chance = new Chance();
 
 describe('index', () => {
     const logFilePath = chance.string();
-    const logFileRegex = '/parentTopic|childTopic|message/g';
+    const logFileRegex = new RegExp('parentTopic|childTopic|message', 'g');
     const mqttHost = chance.string();
     const mqttPort = chance.string();
     const inputOptions = {
