@@ -3,68 +3,70 @@ import {Options} from '../types/Options';
 
 export const override = (inputOptions: InputOptions): Options => {
     return {
-        logFilePath: process.env.LOG_FILE_PATH,
-        logFileRegex: convertToRegex(process.env.LOG_FILE_REGEX),
-        mqttHost: process.env.MQTT_HOST,
-        mqttPort: process.env.MQTT_PORT,
+        logFilePath: determineLogFilePath(inputOptions),
+        logFileRegex: determineLogFileRegex(inputOptions),
+        mqttHost: determineMqttHost(inputOptions),
+        mqttPassword: determineMqttPassword(inputOptions),
+        mqttPort: determineMqttPort(inputOptions),
+        mqttUsername: determineMqttUsername(inputOptions),
     };
 };
 
-const determineLogFilePath = (logFilePath?: string): string => {
+const determineLogFilePath = (inputOptions: InputOptions): string => {
     if (process.env.LOG_FILE_PATH) {
         return process.env.LOG_FILE_PATH;
-    } else if (logFilePath) {
-        return logFilePath;
+    } else if (inputOptions.logFilePath) {
+        return inputOptions.logFilePath;
     }
 
     return '';
 };
 
-const determineLogFileRegex = (logFileRegex?: string): RegExp => {
+const determineLogFileRegex = (inputOptions: InputOptions): RegExp => {
     if (process.env.LOG_FILE_REGEX) {
         return convertToRegex(process.env.LOG_FILE_REGEX);
-    } else if (logFileRegex) {
-        return convertToRegex(logFileRegex);
+    } else if (inputOptions.logFileRegex) {
+        return convertToRegex(inputOptions.logFileRegex);
     }
 
     return new RegExp('');
 };
 
-const determineMqttHost = (mqttHost?: string): string => {
+const determineMqttHost = (inputOptions: InputOptions): string => {
     if (process.env.MQTT_HOST) {
         return process.env.MQTT_HOST;
-    } else if (mqttHost) {
-        return mqttHost;
+    } else if (inputOptions.mqttHost) {
+        return inputOptions.mqttHost;
     }
 
     return 'localhost';
 };
 
-const determineMqttPassword = (mqttPassword?: string): string|undefined => {
+const determineMqttPassword = (inputOptions: InputOptions): string|undefined => {
     if (process.env.MQTT_PASSWORD) {
         return process.env.MQTT_PASSWORD;
-    } else if (mqttPassword) {
-        return mqttPassword;
+    } else if (inputOptions.mqttPassword) {
+        return inputOptions.mqttPassword;
     }
 
     return undefined;
 };
 
-const determineMqttPort = (mqttPort?: string): string => {
+const determineMqttPort = (inputOptions: InputOptions): string => {
     if (process.env.MQTT_PORT) {
         return process.env.MQTT_PORT;
-    } else if (mqttPort) {
-        return mqttPort;
+    } else if (inputOptions.mqttPort) {
+        return inputOptions.mqttPort;
     }
 
     return '1883';
 };
 
-const determineMqttUsername = (mqttUsername?: string): string|undefined => {
+const determineMqttUsername = (inputOptions: InputOptions): string|undefined => {
     if (process.env.MQTT_USERNAME) {
         return process.env.MQTT_USERNAME;
-    } else if (mqttUsername) {
-        return mqttUsername;
+    } else if (inputOptions.mqttUsername) {
+        return inputOptions.mqttUsername;
     }
 
     return undefined;
