@@ -1,21 +1,14 @@
 import {InputOptions} from '../types/Options';
 import {Options} from '../types/Options';
 
-export const override = ({
-    logFilePath,
-    logFileRegex,
-    mqttHost,
-    mqttPort,
-    mqttUsername,
-    mqttPassword,
-}: InputOptions): Options => {
+export const override = (inputOptions: InputOptions): Options => {
     return {
-        logFilePath: determineLogFilePath(logFilePath),
-        logFileRegex: determineLogFileRegex(logFileRegex),
-        mqttHost: determineMqttHost(mqttHost),
-        mqttPassword: determineMqttPassword(mqttPassword),
-        mqttPort: determineMqttPort(mqttPort),
-        mqttUsername: determineMqttUsername(mqttUsername),
+        logFilePath: determineLogFilePath(inputOptions.logFilePath),
+        logFileRegex: determineLogFileRegex(inputOptions.logFileRegex),
+        mqttHost: determineMqttHost(inputOptions.mqttHost),
+        mqttPassword: determineMqttPassword(inputOptions.mqttPassword),
+        mqttPort: determineMqttPort(inputOptions.mqttPort),
+        mqttUsername: determineMqttUsername(inputOptions.mqttUsername),
     };
 };
 
