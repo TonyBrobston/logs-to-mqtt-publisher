@@ -3,12 +3,10 @@ import {Options} from '../types/Options';
 
 export const override = (inputOptions: InputOptions): Options => {
     return {
-        logFilePath: determineLogFilePath(inputOptions.logFilePath),
-        logFileRegex: determineLogFileRegex(inputOptions.logFileRegex),
-        mqttHost: determineMqttHost(inputOptions.mqttHost),
-        mqttPassword: determineMqttPassword(inputOptions.mqttPassword),
-        mqttPort: determineMqttPort(inputOptions.mqttPort),
-        mqttUsername: determineMqttUsername(inputOptions.mqttUsername),
+        logFilePath: process.env.LOG_FILE_PATH,
+        logFileRegex: convertToRegex(process.env.LOG_FILE_REGEX),
+        mqttHost: process.env.MQTT_HOST,
+        mqttPort: process.env.MQTT_PORT,
     };
 };
 
