@@ -16,7 +16,7 @@ describe('index', () => {
     const logFilePath = chance.string();
     const logFileRegex = new RegExp('parentTopic|childTopic|message', 'g');
     const mqttHost = chance.string();
-    const mqttPort = chance.string();
+    const mqttPort = chance.natural();
     const inputOptions = {
         logFilePath,
         logFileRegex,
@@ -41,6 +41,11 @@ describe('index', () => {
 
     beforeAll(async () => {
         await start(inputOptions);
+    });
+
+    it('should call async-mqtt connectAsync', () => {
+        expect(connectAsync).toHaveBeenCalledTimes(1);
+        expect(connectAsync).toHaveBeenCalledWith(`tcp://${mqttHost}:${mqttPort}`);
     });
 
     it('should call chokidar watch', () => {

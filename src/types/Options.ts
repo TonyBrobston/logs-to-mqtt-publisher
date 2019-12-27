@@ -1,11 +1,11 @@
 export interface Options extends SharedOptions {
     mqttHost: string;
-    mqttPort: string;
+    mqttPort: number;
 }
 
 export interface InputOptions extends SharedOptions {
     mqttHost?: string;
-    mqttPort?: string;
+    mqttPort?: number;
 }
 
 export interface SharedOptions {
