@@ -1,16 +1,24 @@
 import {connectAsync} from 'async-mqtt';
+import {Chance} from 'chance';
 import {Server} from 'mosca';
+
+const chance = new Chance();
 
 describe('index', () => {
     let server: any,
         client: any;
 
     beforeAll(async () => {
-        server = await createServer({
-            host: 'localhost',
-            port: 1883,
+        const host = 'localhost';
+        const port = chance.natural({
+            max: 9999,
+            min: 1000,
         });
-        client = await connectAsync('tcp://localhost:1883');
+        server = await createServer({
+            host,
+            port,
+        });
+        client = await connectAsync(`tcp://${host}:${port}`);
     });
 
     afterAll(async () => {
