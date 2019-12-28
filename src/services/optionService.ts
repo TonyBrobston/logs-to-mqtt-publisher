@@ -6,7 +6,9 @@ export const override = (inputOptions: InputOptions): Options => {
         logFilePath: determineLogFilePath(inputOptions),
         logFileRegex: determineLogFileRegex(inputOptions),
         mqttHost: determineMqttHost(inputOptions),
+        mqttPassword: determineMqttPassword(inputOptions),
         mqttPort: determineMqttPort(inputOptions),
+        mqttUsername: determineMqttUsername(inputOptions),
     };
 };
 

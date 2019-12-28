@@ -15,7 +15,7 @@ describe('optionService', () => {
                     logFileRegex: new RegExp(''),
                     mqttHost: 'localhost',
                     mqttPassword: undefined,
-                    mqttPort: '1883',
+                    mqttPort: 1883,
                     mqttUsername: undefined,
                 } as Options,
                 inputOptions: {} as InputOptions,
@@ -27,7 +27,7 @@ describe('optionService', () => {
                     logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPassword: 'password',
-                    mqttPort: '1337',
+                    mqttPort: 1337,
                     mqttUsername: 'root',
                 } as Options,
                 inputOptions: {
@@ -35,7 +35,7 @@ describe('optionService', () => {
                     logFileRegex: '/blah/g',
                     mqttHost: '127.0.0.1',
                     mqttPassword: 'password',
-                    mqttPort: '1337',
+                    mqttPort: 1337,
                     mqttUsername: 'root',
                 } as InputOptions,
                 name: 'should override all inputOptions',
@@ -46,14 +46,14 @@ describe('optionService', () => {
                     logFileRegex: new RegExp('blah', 'g'),
                     mqttHost: '127.0.0.1',
                     mqttPassword: undefined,
-                    mqttPort: '1337',
+                    mqttPort: 1337,
                     mqttUsername: undefined,
                 } as Options,
                 inputOptions: {
                     logFilePath: '/var/log/',
                     logFileRegex: '/blah/g',
                     mqttHost: '127.0.0.1',
-                    mqttPort: '1337',
+                    mqttPort: 1337,
                 } as InputOptions,
                 name: 'should override only the main ones used',
             },
@@ -82,8 +82,8 @@ describe('optionService', () => {
             process.env.MQTT_HOST = mqttHost;
             const mqttPassword = chance.string();
             process.env.MQTT_PASSWORD = mqttPassword;
-            const mqttPort = chance.string();
-            process.env.MQTT_PORT = mqttPort;
+            const mqttPort = chance.natural();
+            process.env.MQTT_PORT = mqttPort.toString();
             const mqttUsername = chance.string();
             process.env.MQTT_USERNAME = mqttUsername;
             const inputOptions = {
@@ -91,7 +91,7 @@ describe('optionService', () => {
                 logFileRegex: '/blah/g',
                 mqttHost: '127.0.0.1',
                 mqttPassword: 'password',
-                mqttPort: '1337',
+                mqttPort: 1337,
                 mqttUsername: 'root',
             } as InputOptions;
 
