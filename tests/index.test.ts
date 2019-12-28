@@ -3,7 +3,7 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
-import {start} from '../src/index';
+import {start, stop} from '../src/index';
 
 const chance = new Chance();
 
@@ -25,7 +25,8 @@ describe('index', () => {
         closeSync(openSync(logFilePath, 'w'));
     });
 
-    afterAll(() => {
+    afterAll(async () => {
+        await stop();
         unlinkSync(logFilePath);
         client.end();
         server.close();
@@ -38,18 +39,24 @@ describe('index', () => {
         const expectedMessage = 'message';
         await client.subscribe(expectedTopic);
 
+        console.log('before start');
         await start({
             logFilePath,
             logFileRegex: `/${parentTopic}|${childTopic}|${expectedMessage}/g`,
             mqttHost,
             mqttPort,
         });
+        console.log('after start');
 
+        console.log('before write file');
         writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
+        console.log('after write file');
         client.on('message', (topic: any, message: any) => {
             expect(topic).toBe(expectedTopic);
             expect(message.toString()).toBe(expectedMessage);
+            console.log('before done');
             done();
+            console.log('after done');
         });
     });
 });
