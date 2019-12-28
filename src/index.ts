@@ -26,9 +26,7 @@ export const start = async (inputOptions: InputOptions): Promise<void> => {
         const line = await read(path, 1);
         const {topic, message}: MqttPayload = parse(line, logFileRegex);
 
-        if (topic && message) {
-            client.publish(topic, message);
-        }
+        topic && message && client.publish(topic, message);
     });
 };
 

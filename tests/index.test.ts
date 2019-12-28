@@ -16,7 +16,8 @@ describe('index', () => {
         max: 9999,
         min: 1000,
     });
-    beforeAll(async () => {
+
+    beforeEach(async () => {
         server = await createServer({
             host: mqttHost,
             port: mqttPort,
@@ -25,14 +26,15 @@ describe('index', () => {
         closeSync(openSync(logFilePath, 'w'));
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await stop();
         unlinkSync(logFilePath);
         client.end();
         server.close();
     });
 
-    it('should subscribe to a topic, watch a file, modify that file, and expect a message', async (done: any) => {
+    it('should subscribe to a topic, watch a file, modify that file, and expect a message',
+       async (done: () => void) => {
         const parentTopic = 'parentTopic';
         const childTopic = 'childTopic';
         const expectedTopic = `${parentTopic}/${childTopic}`;
