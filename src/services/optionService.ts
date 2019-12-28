@@ -50,14 +50,14 @@ const determineMqttPassword = (inputOptions: InputOptions): string|undefined => 
     return undefined;
 };
 
-const determineMqttPort = (inputOptions: InputOptions): string => {
+const determineMqttPort = (inputOptions: InputOptions): number => {
     if (process.env.MQTT_PORT) {
-        return process.env.MQTT_PORT;
+        return Number(process.env.MQTT_PORT);
     } else if (inputOptions.mqttPort) {
         return inputOptions.mqttPort;
     }
 
-    return '1883';
+    return 1883;
 };
 
 const determineMqttUsername = (inputOptions: InputOptions): string|undefined => {

@@ -1,39 +1,54 @@
 import {connectAsync} from 'async-mqtt';
 import {Chance} from 'chance';
+import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
+
+import {start} from '../src/index';
 
 const chance = new Chance();
 
 describe('index', () => {
     let server: any,
         client: any;
-
+    const logFilePath = `${__dirname}/test.log`;
+    const mqttHost = 'localhost';
+    const mqttPort = chance.natural({
+        max: 9999,
+        min: 1000,
+    });
     beforeAll(async () => {
-        const host = 'localhost';
-        const port = chance.natural({
-            max: 9999,
-            min: 1000,
-        });
         server = await createServer({
-            host,
-            port,
+            host: mqttHost,
+            port: mqttPort,
         });
-        client = await connectAsync(`tcp://${host}:${port}`);
+        client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
+        closeSync(openSync(logFilePath, 'w'));
     });
 
-    afterAll(async () => {
-        await client.end();
+    afterAll(() => {
+        unlinkSync(logFilePath);
+        client.end();
         server.close();
     });
 
-    it('should stand up a mqtt broker, subscriber, publish, and receive message', async (done: any) => {
-        await client.subscribe('presence');
+    it('should subscribe to a topic, watch a file, modify that file, and expect a message', async (done: any) => {
+        const parentTopic = 'parentTopic';
+        const childTopic = 'childTopic';
+        const expectedTopic = `${parentTopic}/${childTopic}`;
+        const expectedMessage = 'message';
+        await client.subscribe(expectedTopic);
 
-        await client.publish('presence', 'It works!');
+        await start({
+            logFilePath,
+            logFileRegex: `/${parentTopic}|${childTopic}|${expectedMessage}/g`,
+            mqttHost,
+            mqttPort,
+        });
 
+        writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
         client.on('message', (topic: any, message: any) => {
-            expect(topic).toBe('presence');
-            expect(message.toString()).toBe('It works!');
+            expect(topic).toBe(expectedTopic);
+            expect(message.toString()).toBe(expectedMessage);
             done();
         });
     });
