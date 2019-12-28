@@ -11,7 +11,8 @@
         "no-bitwise": false,
         "interface-name": [true, "never-prefix"],
         "typedef": [true, "call-signature", "arrow-call-signature", "parameter", "arrow-parameter", "property-declaration", "member-variable-declaration", "object-destructuring", "array-destructuring"],
-        "no-console": [true, "warning"]
+        "no-console": [true, "warning"],
+        "no-unused-expression": [true, "allow-fast-null-checks"]
     },
     "rulesDirectory": []
 }

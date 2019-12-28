@@ -1,70 +1,67 @@
-import {connectAsync} from 'async-mqtt';
+import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {Chance} from 'chance';
-import {watch} from 'chokidar';
-import {read} from 'read-last-lines';
-import {start} from '../src/index';
-import {MqttPayload} from '../src/types/MqttPayload';
+import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
+import {Server} from 'mosca';
 
-jest.mock('async-mqtt');
-jest.mock('chokidar');
-jest.mock('read-last-lines');
-jest.mock('mqtt');
+import {start, stop} from '../src/index';
 
 const chance = new Chance();
 
 describe('index', () => {
-    const logFilePath = chance.string();
-    const logFileRegex = '/parentTopic|childTopic|message/g';
-    const mqttHost = chance.string();
-    const mqttPort = chance.string();
-    const inputOptions = {
-        logFilePath,
-        logFileRegex,
-        mqttHost,
-        mqttPort,
-    };
-    const publish = jest.fn();
-    const client = {
-        publish,
-    };
-    (connectAsync as jest.Mock).mockResolvedValue(client);
-    const path = chance.string();
-    const on = jest.fn().mockImplementation((payload: MqttPayload, onCallback: any) => {
-        onCallback(path);
-    });
-    const watcher = {
-        on,
-    };
-    (watch as jest.Mock).mockReturnValue(watcher);
-    const line = 'parentTopic,childTopic,message';
-    read.mockResolvedValue(line);
-
-    beforeAll(async () => {
-        await start(inputOptions);
+    let server: Server,
+        client: AsyncMqttClient;
+    const logFilePath = `${__dirname}/test.log`;
+    const mqttHost = 'localhost';
+    const mqttPort = chance.natural({
+        max: 9999,
+        min: 1000,
     });
 
-    it('should call async-mqtt connectAsync', () => {
-        expect(connectAsync).toHaveBeenCalledTimes(1);
-        expect(connectAsync).toHaveBeenCalledWith(`tcp://${mqttHost}:${mqttPort}`);
+    beforeEach(async () => {
+        server = await createServerAsync({
+            host: mqttHost,
+            port: mqttPort,
+        });
+        client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
+        closeSync(openSync(logFilePath, 'w'));
     });
 
-    it('should call chokidar watch', () => {
-        expect(watch).toHaveBeenCalledTimes(1);
-        expect(watch).toHaveBeenCalledWith(logFilePath.toString());
+    afterEach(async () => {
+        await stop();
+        unlinkSync(logFilePath);
+        client.end();
+        server.close();
     });
 
-    it('should call chokidar on change', () => {
-        expect(on).toHaveBeenCalledTimes(1);
-        expect(on).toHaveBeenCalledWith('change', expect.any(Function));
-    });
+    it('should subscribe to a topic, watch a file, modify that file, and expect a message',
+       async (done: () => void) => {
+        const parentTopic = 'parentTopic';
+        const childTopic = 'childTopic';
+        const expectedTopic = `${parentTopic}/${childTopic}`;
+        const expectedMessage = 'message';
+        await client.subscribe(expectedTopic);
 
-    it('should call read-last-lines read', () => {
-        expect(read).toHaveBeenCalledTimes(1);
-        expect(read).toHaveBeenCalledWith(path, 1);
-    });
+        await start({
+            logFilePath,
+            logFileRegex: `/${parentTopic}|${childTopic}|${expectedMessage}/g`,
+            mqttHost,
+            mqttPort,
+        });
 
-    it('should call async-mqtt publish', () => {
-        expect(publish).toHaveBeenCalledTimes(1);
-        expect(publish).toHaveBeenCalledWith('parentTopic/childTopic', 'message');
+        writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
+        client.on('message', (topic: string, message: string) => {
+            expect(topic).toBe(expectedTopic);
+            expect(message.toString()).toBe(expectedMessage);
+            done();
+        });
     });
 });
+
+const createServerAsync = (settings: object): Promise<Server> => {
+    return new Promise((resolve: (server: Server) => void): void  => {
+        const server = new Server(settings);
+        server.on('ready', () => {
+            resolve(server);
+        });
+    });
+};
