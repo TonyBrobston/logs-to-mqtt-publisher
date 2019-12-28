@@ -3,7 +3,7 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
-import {start} from '../src/index';
+import {start, stop} from '../src/index';
 
 const chance = new Chance();
 
@@ -25,7 +25,8 @@ describe('index', () => {
         closeSync(openSync(logFilePath, 'w'));
     });
 
-    afterAll(() => {
+    afterAll(async () => {
+        await stop();
         unlinkSync(logFilePath);
         client.end();
         server.close();
