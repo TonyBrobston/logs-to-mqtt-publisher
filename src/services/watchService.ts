@@ -1,6 +1,6 @@
-import {watch} from 'chokidar';
+import {FSWatcher, watch} from 'chokidar';
 
-export const watchAsync = (pathToWatch: string): any => {
+export const watchAsync = (pathToWatch: string): Promise<FSWatcher> => {
     return new Promise((resolve: any): any => {
         const watcher = watch(pathToWatch);
         watcher.on('ready', () => {

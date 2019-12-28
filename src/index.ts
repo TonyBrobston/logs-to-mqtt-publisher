@@ -1,6 +1,6 @@
-import {connectAsync} from 'async-mqtt';
+import {AsyncMqttClient, connectAsync} from 'async-mqtt';
+import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
-
 import {MqttPayload} from './types/MqttPayload';
 import {InputOptions} from './types/Options';
 import {Options} from './types/Options';
@@ -9,8 +9,8 @@ import {parse} from './services/logService';
 import {override} from './services/optionService';
 import {watchAsync} from './services/watchService';
 
-let client: any,
-    watcher: any;
+let client: AsyncMqttClient,
+    watcher: FSWatcher;
 
 export const start = async (inputOptions: InputOptions): Promise<void> => {
     const {
