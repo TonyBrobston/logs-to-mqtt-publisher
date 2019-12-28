@@ -1,4 +1,4 @@
-import {connectAsync} from 'async-mqtt';
+import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
@@ -8,8 +8,8 @@ import {start, stop} from '../src/index';
 const chance = new Chance();
 
 describe('index', () => {
-    let server: any,
-        client: any;
+    let server: Server,
+        client: AsyncMqttClient;
     const logFilePath = `${__dirname}/test.log`;
     const mqttHost = 'localhost';
     const mqttPort = chance.natural({
@@ -18,7 +18,7 @@ describe('index', () => {
     });
 
     beforeEach(async () => {
-        server = await createServer({
+        server = await createServerAsync({
             host: mqttHost,
             port: mqttPort,
         });
@@ -49,7 +49,7 @@ describe('index', () => {
         });
 
         writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
-        client.on('message', (topic: any, message: any) => {
+        client.on('message', (topic: string, message: string) => {
             expect(topic).toBe(expectedTopic);
             expect(message.toString()).toBe(expectedMessage);
             done();
@@ -57,8 +57,8 @@ describe('index', () => {
     });
 });
 
-const createServer = (settings: any): any => {
-    return new Promise((resolve: any): any => {
+const createServerAsync = (settings: object): Promise<Server> => {
+    return new Promise((resolve: (server: Server) => void): void  => {
         const server = new Server(settings);
         server.on('ready', () => {
             resolve(server);
