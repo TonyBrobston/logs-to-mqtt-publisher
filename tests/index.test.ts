@@ -11,19 +11,6 @@ describe('index', () => {
             port: 1883,
         });
         client = await connectAsync('tcp://localhost:1883');
-        client.on('connect', () => {
-            console.log('client connected');
-        });
-        client.on('connectAsync', () => {
-            console.log('client connected async');
-        });
-        client.on('error', () => {
-            console.log('client errored');
-        });
-        client.on('message', (topic: any, message: any) => {
-            console.log('topic:', topic);
-            console.log('message:', message.toString());
-        });
     });
 
     afterAll(async () => {
@@ -31,11 +18,16 @@ describe('index', () => {
         server.close();
     });
 
-    it('should stand up a mqtt broker, subscriber, publish, and receive message', async () => {
-        console.log('in test');
-        const subscribed = await client.subscribe('presence');
+    it('should stand up a mqtt broker, subscriber, publish, and receive message', async (done: any) => {
+        await client.subscribe('presence');
+
         await client.publish('presence', 'It works!');
-        console.log('subscribed', subscribed);
+
+        client.on('message', (topic: any, message: any) => {
+            expect(topic).toBe('presence');
+            expect(message.toString()).toBe('It works!');
+            done();
+        });
     });
 });
 
