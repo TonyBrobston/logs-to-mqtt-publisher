@@ -1,36 +1,50 @@
 import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
-import {MqttPayload} from './types/MqttPayload';
-import {InputOptions} from './types/Options';
-import {Options} from './types/Options';
 
-import {parse} from './services/logService';
-import {override} from './services/optionService';
+import {MqttPayload} from './types/MqttPayload';
+import {LogWatch, Options} from './types/Options';
+
+import {parseLog} from './services/logService';
+import {parseOptions} from './services/optionService';
 import {watchAsync} from './services/watchService';
 
-let client: AsyncMqttClient,
-    watcher: FSWatcher;
+let client: AsyncMqttClient;
+const watchers: FSWatcher[] = [];
 
-export const start = async (inputOptions: InputOptions): Promise<void> => {
+export const start = async (
+    options: Options = parseOptions(process.env.OPTIONS),
+): Promise<void> => {
     const {
-        logFilePath,
-        logFileRegex,
-        mqttHost,
-        mqttPort,
-    }: Options = override(inputOptions);
-    client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
+        logWatches,
+        mqtt: {
+            host,
+            port,
+        },
+    }: Options = options;
 
-    watcher = await watchAsync(logFilePath);
-    watcher.on('change', async (path: string): Promise<void> => {
-        const line = await read(path, 1);
-        const {topic, message}: MqttPayload = parse(line, logFileRegex);
+    client = await connectAsync(`tcp://${host}:${port}`);
 
-        topic && message && client.publish(topic, message);
-    });
+    await Promise.all(logWatches.map(async ({
+        filePath,
+        regularExpressions,
+    }: LogWatch) => {
+        const watcher = await watchAsync(filePath);
+        watchers.push(watcher);
+        watcher.on('change', async (path: string): Promise<void> => {
+            regularExpressions.forEach(async (regularExpression: string) => {
+                const logLine = await read(path, 1);
+                const {topic, message}: MqttPayload = parseLog(logLine, regularExpression);
+
+                topic && message && client.publish(topic, message);
+            });
+        });
+    }));
 };
 
 export const stop = async (): Promise<void> => {
-    await watcher.close();
+    await Promise.all(watchers.map(async (watcher: FSWatcher) => {
+        await watcher.close();
+    }));
     client.end();
 };

@@ -10,49 +10,97 @@ const chance = new Chance();
 describe('index', () => {
     let server: Server,
         client: AsyncMqttClient;
-    const logFilePath = `${__dirname}/test.log`;
-    const mqttHost = 'localhost';
-    const mqttPort = chance.natural({
+    const host = 'localhost';
+    const port = chance.natural({
         max: 9999,
         min: 1000,
     });
+    const filePath = `${__dirname}/test.log`;
 
     beforeEach(async () => {
         server = await createServerAsync({
-            host: mqttHost,
-            port: mqttPort,
+            host,
+            port,
         });
-        client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
-        closeSync(openSync(logFilePath, 'w'));
+        client = await connectAsync(`tcp://${host}:${port}`);
+        closeSync(openSync(filePath, 'w'));
     });
 
-    afterEach(async () => {
-        await stop();
-        unlinkSync(logFilePath);
+    afterEach(() => {
+        stop();
+        unlinkSync(filePath);
         client.end();
         server.close();
     });
 
-    it('should subscribe to a topic, watch a file, modify that file, and expect a message',
-       async (done: () => void) => {
-        const parentTopic = 'parentTopic';
-        const childTopic = 'childTopic';
-        const expectedTopic = `${parentTopic}/${childTopic}`;
-        const expectedMessage = 'message';
-        await client.subscribe(expectedTopic);
+    describe('set javascript Options variable', () => {
+        it('should subscribe to a topic, watch a file, modify that file, and expect a message',
+           async (done: () => void) => {
+            const parentTopic = 'parentTopic1';
+            const childTopic = 'childTopic1';
+            const expectedTopic = `${parentTopic}/${childTopic}`;
+            const expectedMessage = 'message1';
+            const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
+            await client.subscribe(expectedTopic);
 
-        await start({
-            logFilePath,
-            logFileRegex: `/${parentTopic}|${childTopic}|${expectedMessage}/g`,
-            mqttHost,
-            mqttPort,
+            await start({
+                logWatches: [
+                    {
+                        filePath,
+                        regularExpressions: [
+                            regularExpression,
+                        ],
+                    },
+                ],
+                mqtt: {
+                    host,
+                    port,
+                },
+            });
+
+            writeFileSync(filePath, `${parentTopic},${childTopic},${expectedMessage}`);
+            client.on('message', (topic: string, message: string) => {
+                expect(topic).toBe(expectedTopic);
+                expect(message.toString()).toBe(expectedMessage);
+                done();
+            });
         });
+    });
 
-        writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
-        client.on('message', (topic: string, message: string) => {
-            expect(topic).toBe(expectedTopic);
-            expect(message.toString()).toBe(expectedMessage);
-            done();
+    describe('set environment variables', () => {
+        it('should subscribe to a topic, watch a file, modify that file, and expect a message',
+           async (done: () => void) => {
+            const parentTopic = 'parentTopic2';
+            const childTopic = 'childTopic2';
+            const expectedTopic = `${parentTopic}/${childTopic}`;
+            const expectedMessage = 'message2';
+            const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
+            await client.subscribe(expectedTopic);
+
+            const options = {
+                logWatches: [
+                    {
+                        filePath,
+                        regularExpressions: [
+                            regularExpression,
+                        ],
+                    },
+                ],
+                mqtt: {
+                    host,
+                    port,
+                },
+            };
+            process.env.OPTIONS = JSON.stringify(options);
+
+            await start();
+
+            writeFileSync(filePath, `${parentTopic},${childTopic},${expectedMessage}`);
+            client.on('message', (topic: string, message: string) => {
+                expect(topic).toBe(expectedTopic);
+                expect(message.toString()).toBe(expectedMessage);
+                done();
+            });
         });
     });
 });
