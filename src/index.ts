@@ -5,7 +5,6 @@ import {MqttPayload} from './types/MqttPayload';
 import {LogOption, Options} from './types/Options';
 
 import {parse} from './services/logService';
-import {override} from './services/optionService';
 import {watchAsync} from './services/watchService';
 
 let client: AsyncMqttClient;
