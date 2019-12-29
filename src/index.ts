@@ -2,7 +2,7 @@ import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
 import {MqttPayload} from './types/MqttPayload';
-import {LogWatch, Options} from './types/Options';
+import {LogWatch, Mqtt, Options} from './types/Options';
 
 import {parse} from './services/logService';
 import {watchAsync} from './services/watchService';
@@ -11,12 +11,13 @@ let client: AsyncMqttClient;
 const watchers: FSWatcher[] = [];
 
 export const start = async ({
-        logWatches,
-        mqtt: {
-            host,
-            port,
-        },
-    }: Options): Promise<void> => {
+    logWatches,
+    mqtt,
+}: Options = {
+    logWatches: JSON.parse(process.env.LOG_WATCHES || '{}'),
+    mqtt: JSON.parse(process.env.MQTT || '{}'),
+}): Promise<void> => {
+    const {host, port}: Mqtt = mqtt;
     client = await connectAsync(`tcp://${host}:${port}`);
 
     await Promise.all(logWatches.map(async ({
