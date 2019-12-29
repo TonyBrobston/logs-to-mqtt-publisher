@@ -11,12 +11,18 @@ describe('optionService', () => {
         const scenarios = [
             {
                 expectedOptions: {
-                    logFilePath: '',
-                    logFileRegex: new RegExp(''),
-                    mqttHost: 'localhost',
-                    mqttPassword: undefined,
-                    mqttPort: 1883,
-                    mqttUsername: undefined,
+                    logs: [
+                        {
+                            logFilePath: '',
+                            logFileRegex: new RegExp(''),
+                        }
+                    ],
+                    mqtt: {
+                        host: 'localhost',
+                        password: undefined,
+                        port: 1883,
+                        username: undefined,
+                    }
                 } as Options,
                 inputOptions: {} as InputOptions,
                 name: 'should not override any inputOptions',

@@ -10,25 +10,25 @@ const chance = new Chance();
 describe('index', () => {
     let server: Server,
         client: AsyncMqttClient;
-    const logFilePath = `${__dirname}/test.log`;
-    const mqttHost = 'localhost';
-    const mqttPort = chance.natural({
+    const host = 'localhost';
+    const port = chance.natural({
         max: 9999,
         min: 1000,
     });
+    const filePath = `${__dirname}/test.log`;
 
     beforeEach(async () => {
         server = await createServerAsync({
-            host: mqttHost,
-            port: mqttPort,
+            host,
+            port,
         });
-        client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
-        closeSync(openSync(logFilePath, 'w'));
+        client = await connectAsync(`tcp://${host}:${port}`);
+        closeSync(openSync(filePath, 'w'));
     });
 
     afterEach(async () => {
         await stop();
-        unlinkSync(logFilePath);
+        unlinkSync(filePath);
         client.end();
         server.close();
     });
@@ -39,16 +39,25 @@ describe('index', () => {
         const childTopic = 'childTopic';
         const expectedTopic = `${parentTopic}/${childTopic}`;
         const expectedMessage = 'message';
+        const regularExpression = new RegExp(`${parentTopic}|${childTopic}|${expectedMessage}`, 'g');
         await client.subscribe(expectedTopic);
 
         await start({
-            logFilePath,
-            logFileRegex: `/${parentTopic}|${childTopic}|${expectedMessage}/g`,
-            mqttHost,
-            mqttPort,
+            logOptions: [
+                {
+                    filePath,
+                    regularExpressions: [
+                        regularExpression,
+                    ],
+                },
+            ],
+            mqttOptions: {
+                host,
+                port,
+            },
         });
 
-        writeFileSync(logFilePath, `${parentTopic},${childTopic},${expectedMessage}`);
+        writeFileSync(filePath, `${parentTopic},${childTopic},${expectedMessage}`);
         client.on('message', (topic: string, message: string) => {
             expect(topic).toBe(expectedTopic);
             expect(message.toString()).toBe(expectedMessage);

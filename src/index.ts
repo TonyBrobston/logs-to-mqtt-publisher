@@ -2,8 +2,7 @@ import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
 import {MqttPayload} from './types/MqttPayload';
-import {InputOptions} from './types/Options';
-import {Options} from './types/Options';
+import {LogOption, Options} from './types/Options';
 
 import {parse} from './services/logService';
 import {override} from './services/optionService';
@@ -12,21 +11,30 @@ import {watchAsync} from './services/watchService';
 let client: AsyncMqttClient,
     watcher: FSWatcher;
 
-export const start = async (inputOptions: InputOptions): Promise<void> => {
-    const {
-        logFilePath,
-        logFileRegex,
-        mqttHost,
-        mqttPort,
-    }: Options = override(inputOptions);
-    client = await connectAsync(`tcp://${mqttHost}:${mqttPort}`);
+export const start = async ({
+        logOptions,
+        mqttOptions: {
+            host,
+            port,
+        },
+    }: Options): Promise<void> => {
+    client = await connectAsync(`tcp://${host}:${port}`);
 
-    watcher = await watchAsync(logFilePath);
-    watcher.on('change', async (path: string): Promise<void> => {
-        const line = await read(path, 1);
-        const {topic, message}: MqttPayload = parse(line, logFileRegex);
+    logOptions.forEach(async ({
+        filePath,
+        regularExpressions,
+    }: LogOption) => {
+        watcher = await watchAsync(filePath);
+        watcher.on('change', async (path: string): Promise<void> => {
+            Promise.all(
+                regularExpressions.map(async (regularExpression: RegExp) => {
+                    const line = await read(path, 1);
+                    const {topic, message}: MqttPayload = parse(line, regularExpression);
 
-        topic && message && client.publish(topic, message);
+                    topic && message && client.publish(topic, message);
+                }),
+            );
+        });
     });
 };
 

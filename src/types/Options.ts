@@ -1,18 +1,16 @@
-export interface Options extends SharedOptions {
-    logFilePath: string;
-    logFileRegex: RegExp;
-    mqttHost: string;
-    mqttPort: number;
+export interface MqttOptions {
+    host: string;
+    port: number;
+    username?: string;
+    password?: string;
 }
 
-export interface InputOptions extends SharedOptions {
-    logFilePath?: string;
-    logFileRegex?: string;
-    mqttHost?: string;
-    mqttPort?: number;
+export interface LogOption {
+    filePath: string;
+    regularExpressions: RegExp[];
 }
 
-export interface SharedOptions {
-    mqttUsername?: string;
-    mqttPassword?: string;
+export interface Options {
+    logOptions: LogOption[];
+    mqttOptions: MqttOptions;
 }
