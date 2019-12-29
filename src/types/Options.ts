@@ -1,4 +1,4 @@
-export interface MqttOptions {
+export interface Mqtt {
     host: string;
     port: number;
     username?: string;
@@ -12,5 +12,5 @@ export interface LogOption {
 
 export interface Options {
     logOptions: LogOption[];
-    mqttOptions: MqttOptions;
+    mqtt: Mqtt;
 }

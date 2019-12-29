@@ -12,7 +12,7 @@ const watchers: FSWatcher[] = [];
 
 export const start = async ({
         logOptions,
-        mqttOptions: {
+        mqtt: {
             host,
             port,
         },

@@ -51,7 +51,7 @@ describe('index', () => {
                     ],
                 },
             ],
-            mqttOptions: {
+            mqtt: {
                 host,
                 port,
             },
