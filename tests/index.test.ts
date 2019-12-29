@@ -77,20 +77,21 @@ describe('index', () => {
             const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
             await client.subscribe(expectedTopic);
 
-            const mqtt = {
-                host,
-                port,
-            };
-            process.env.MQTT = JSON.stringify(mqtt);
-            const logWatches = [
-                {
-                    filePath,
-                    regularExpressions: [
-                        regularExpression,
-                    ],
+            const options = {
+                logWatches: [
+                    {
+                        filePath,
+                        regularExpressions: [
+                            regularExpression,
+                        ],
+                    },
+                ],
+                mqtt: {
+                    host,
+                    port,
                 },
-            ];
-            process.env.LOG_WATCHES = JSON.stringify(logWatches);
+            };
+            process.env.OPTIONS = JSON.stringify(options);
 
             await start();
 
