@@ -8,8 +8,8 @@ import {parse} from './services/logService';
 import {override} from './services/optionService';
 import {watchAsync} from './services/watchService';
 
-let client: AsyncMqttClient,
-    watcher: FSWatcher;
+let client: AsyncMqttClient;
+const watchers: FSWatcher[] = [];
 
 export const start = async ({
         logOptions,
@@ -20,25 +20,26 @@ export const start = async ({
     }: Options): Promise<void> => {
     client = await connectAsync(`tcp://${host}:${port}`);
 
-    logOptions.forEach(async ({
+    await Promise.all(logOptions.map(async ({
         filePath,
         regularExpressions,
     }: LogOption) => {
-        watcher = await watchAsync(filePath);
+        const watcher = await watchAsync(filePath);
+        watchers.push(watcher);
         watcher.on('change', async (path: string): Promise<void> => {
-            Promise.all(
-                regularExpressions.map(async (regularExpression: RegExp) => {
-                    const line = await read(path, 1);
-                    const {topic, message}: MqttPayload = parse(line, regularExpression);
+            regularExpressions.forEach(async (regularExpression: RegExp) => {
+                const line = await read(path, 1);
+                const {topic, message}: MqttPayload = parse(line, regularExpression);
 
-                    topic && message && client.publish(topic, message);
-                }),
-            );
+                topic && message && client.publish(topic, message);
+            });
         });
-    });
+    }));
 };
 
 export const stop = async (): Promise<void> => {
-    await watcher.close();
+    await Promise.all(watchers.map(async (watcher: FSWatcher) => {
+        await watcher.close();
+    }));
     client.end();
 };

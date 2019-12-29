@@ -26,8 +26,8 @@ describe('index', () => {
         closeSync(openSync(filePath, 'w'));
     });
 
-    afterEach(async () => {
-        await stop();
+    afterEach(() => {
+        stop();
         unlinkSync(filePath);
         client.end();
         server.close();
