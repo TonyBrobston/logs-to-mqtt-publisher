@@ -8,38 +8,38 @@ import {start, stop} from '../src/index';
 const chance = new Chance();
 
 describe('index', () => {
+    let server: Server,
+        client: AsyncMqttClient;
+    const host = 'localhost';
+    const port = chance.natural({
+        max: 9999,
+        min: 1000,
+    });
+    const filePath = `${__dirname}/test.log`;
+
+    beforeEach(async () => {
+        server = await createServerAsync({
+            host,
+            port,
+        });
+        client = await connectAsync(`tcp://${host}:${port}`);
+        closeSync(openSync(filePath, 'w'));
+    });
+
+    afterEach(() => {
+        stop();
+        unlinkSync(filePath);
+        client.end();
+        server.close();
+    });
+
     describe('set javascript Options variable', () => {
-        let server: Server,
-            client: AsyncMqttClient;
-        const host = 'localhost';
-        const port = chance.natural({
-            max: 9999,
-            min: 1000,
-        });
-        const filePath = `${__dirname}/test.log`;
-
-        beforeEach(async () => {
-            server = await createServerAsync({
-                host,
-                port,
-            });
-            client = await connectAsync(`tcp://${host}:${port}`);
-            closeSync(openSync(filePath, 'w'));
-        });
-
-        afterEach(() => {
-            stop();
-            unlinkSync(filePath);
-            client.end();
-            server.close();
-        });
-
         it('should subscribe to a topic, watch a file, modify that file, and expect a message',
            async (done: () => void) => {
-            const parentTopic = 'parentTopic';
-            const childTopic = 'childTopic';
+            const parentTopic = 'parentTopic1';
+            const childTopic = 'childTopic1';
             const expectedTopic = `${parentTopic}/${childTopic}`;
-            const expectedMessage = 'message';
+            const expectedMessage = 'message1';
             const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
             await client.subscribe(expectedTopic);
 
@@ -68,37 +68,12 @@ describe('index', () => {
     });
 
     describe('set environment variables', () => {
-        let server: Server,
-            client: AsyncMqttClient;
-        const host = 'localhost';
-        const port = chance.natural({
-            max: 9999,
-            min: 1000,
-        });
-        const filePath = `${__dirname}/test.log`;
-
-        beforeEach(async () => {
-            server = await createServerAsync({
-                host,
-                port,
-            });
-            client = await connectAsync(`tcp://${host}:${port}`);
-            closeSync(openSync(filePath, 'w'));
-        });
-
-        afterEach(() => {
-            stop();
-            unlinkSync(filePath);
-            client.end();
-            server.close();
-        });
-
         it('should subscribe to a topic, watch a file, modify that file, and expect a message',
            async (done: () => void) => {
-            const parentTopic = 'parentTopic';
-            const childTopic = 'childTopic';
+            const parentTopic = 'parentTopic2';
+            const childTopic = 'childTopic2';
             const expectedTopic = `${parentTopic}/${childTopic}`;
-            const expectedMessage = 'message';
+            const expectedMessage = 'message2';
             const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
             await client.subscribe(expectedTopic);
 
