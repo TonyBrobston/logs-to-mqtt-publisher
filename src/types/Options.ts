@@ -7,7 +7,7 @@ export interface Mqtt {
 
 export interface LogWatch {
     filePath: string;
-    regularExpressions: RegExp[];
+    regularExpressions: string[];
 }
 
 export interface Options {

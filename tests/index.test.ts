@@ -39,17 +39,11 @@ describe('index', () => {
         const childTopic = 'childTopic';
         const expectedTopic = `${parentTopic}/${childTopic}`;
         const expectedMessage = 'message';
-        const regularExpression = new RegExp(`${parentTopic}|${childTopic}|${expectedMessage}`, 'g');
+        const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
         await client.subscribe(expectedTopic);
 
         await start({
             logWatches: [
-                {
-                    filePath,
-                    regularExpressions: [
-                        regularExpression,
-                    ],
-                },
                 {
                     filePath,
                     regularExpressions: [

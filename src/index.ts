@@ -26,7 +26,7 @@ export const start = async ({
         const watcher = await watchAsync(filePath);
         watchers.push(watcher);
         watcher.on('change', async (path: string): Promise<void> => {
-            regularExpressions.forEach(async (regularExpression: RegExp) => {
+            regularExpressions.forEach(async (regularExpression: string) => {
                 const line = await read(path, 1);
                 const {topic, message}: MqttPayload = parse(line, regularExpression);
 
