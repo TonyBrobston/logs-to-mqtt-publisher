@@ -3,7 +3,14 @@ import {parseOptions} from '../../src/services/optionService';
 describe('option service', () => {
     it('should parse into Options', () => {
         const expectedOptions = {
-            logWatches: [],
+            logWatches: [
+                {
+                    filePath: '/foo/bar.log',
+                    regularExpressions: [
+                        '/foo/g',
+                    ],
+                },
+            ],
             mqtt: {
                 host: 'localhost',
                 port: 1883,
