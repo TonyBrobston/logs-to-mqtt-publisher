@@ -43,7 +43,13 @@ describe('index', () => {
         await client.subscribe(expectedTopic);
 
         await start({
-            logOptions: [
+            logWatches: [
+                {
+                    filePath,
+                    regularExpressions: [
+                        regularExpression,
+                    ],
+                },
                 {
                     filePath,
                     regularExpressions: [

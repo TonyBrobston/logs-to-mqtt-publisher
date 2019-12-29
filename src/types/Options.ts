@@ -5,12 +5,12 @@ export interface Mqtt {
     password?: string;
 }
 
-export interface LogOption {
+export interface LogWatch {
     filePath: string;
     regularExpressions: RegExp[];
 }
 
 export interface Options {
-    logOptions: LogOption[];
+    logWatches: LogWatch[];
     mqtt: Mqtt;
 }
