@@ -1,6 +1,6 @@
 import {MqttPayload} from './../types/MqttPayload';
 
-export const parse = (line: string, regularExpression: string): MqttPayload => {
+export const parseLog = (line: string, regularExpression: string): MqttPayload => {
     const found = line.match(convertToRegex(regularExpression));
 
     if (found) {

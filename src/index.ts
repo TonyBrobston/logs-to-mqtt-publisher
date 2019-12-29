@@ -1,17 +1,19 @@
 import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
+
 import {MqttPayload} from './types/MqttPayload';
 import {LogWatch, Options} from './types/Options';
 
-import {parse} from './services/logService';
+import {parseLog} from './services/logService';
+import {parseOptions} from './services/optionService';
 import {watchAsync} from './services/watchService';
 
 let client: AsyncMqttClient;
 const watchers: FSWatcher[] = [];
 
 export const start = async (
-    options: Options = JSON.parse(process.env.OPTIONS || '{}'),
+    options: Options = parseOptions(process.env.OPTIONS),
 ): Promise<void> => {
     const {
         logWatches,
@@ -31,8 +33,8 @@ export const start = async (
         watchers.push(watcher);
         watcher.on('change', async (path: string): Promise<void> => {
             regularExpressions.forEach(async (regularExpression: string) => {
-                const line = await read(path, 1);
-                const {topic, message}: MqttPayload = parse(line, regularExpression);
+                const logLine = await read(path, 1);
+                const {topic, message}: MqttPayload = parseLog(logLine, regularExpression);
 
                 topic && message && client.publish(topic, message);
             });
