@@ -2,7 +2,7 @@
 A server-side JavaScript tool that converts log statements to topics and publishes them to an mqtt broker.
 
 [![npm version](https://badge.fury.io/js/logs-to-mqtt-publisher.svg)](https://badge.fury.io/js/logs-to-mqtt-publisher)
-[![Build Status](https://travis-ci.com/TonyBrobston/logs-to-mqtt-publisher.svg?branch=master)](https://travis-ci.org/TonyBrobston/logs-to-mqtt-publisher)
+[![Build Status](https://travis-ci.org/TonyBrobston/logs-to-mqtt-publisher.svg?branch=master)](https://travis-ci.org/TonyBrobston/logs-to-mqtt-publisher)
 [![codecov](https://codecov.io/gh/TonyBrobston/logs-to-mqtt-publisher/branch/master/graph/badge.svg)](https://codecov.io/gh/tonybrobston/logs-to-mqtt-publisher)
 [![Dependencies](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher/status.svg)](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher)
 [![Dev Dependencies](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher/dev-status.svg)](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher?type=dev)
