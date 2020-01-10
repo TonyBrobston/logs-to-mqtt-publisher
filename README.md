@@ -7,7 +7,7 @@ A server-side JavaScript tool that converts log statements to topics and publish
 [![Dependencies](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher/status.svg)](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher)
 [![Dev Dependencies](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher/dev-status.svg)](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher?type=dev)
 [![Peer Dependencies](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher/peer-status.svg)](https://david-dm.org/tonybrobston/logs-to-mqtt-publisher?type=peer)
-[![Known Vulnerabilities](https://snyk.io/test/github/tonybrobston/logs-to-mqtt-publisher/badge.svg)](https://snyk.io/test/github/tonybrobston/logs-to-mqtt-publisher)
+[![Known Vulnerabilities](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher?targetFile=package.json)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors)
 
 ## Parameter example
