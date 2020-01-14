@@ -19,11 +19,13 @@ export const start = async (
         logWatches,
         mqtt: {
             host,
+            password,
             port,
+            username,
         },
     }: Options = options;
 
-    client = await connectAsync(`tcp://${host}:${port}`);
+    client = await connectAsync(`tcp://${host}:${port}`, {username, password});
 
     await Promise.all(logWatches.map(async ({
         filePath,
