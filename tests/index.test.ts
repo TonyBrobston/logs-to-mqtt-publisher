@@ -3,6 +3,8 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
+import {Mqtt} from '../src/types/Options';
+
 import {start, stop} from '../src/index';
 
 const chance = new Chance();
@@ -22,10 +24,10 @@ describe('index', () => {
     beforeEach(async () => {
         server = await createServerAsync({
                 host,
+                password,
                 port,
+                username,
             },
-            username,
-            password,
         );
         client = await connectAsync(`tcp://${host}:${port}`, {username, password});
         closeSync(openSync(filePath, 'w'));
@@ -95,7 +97,9 @@ describe('index', () => {
                 ],
                 mqtt: {
                     host,
+                    password,
                     port,
+                    username,
                 },
             };
             process.env.OPTIONS = JSON.stringify(options);
@@ -112,9 +116,17 @@ describe('index', () => {
     });
 });
 
-const createServerAsync = (settings: {}, username: string, password: string): Promise<Server> => {
+const createServerAsync = ({
+    host,
+    password,
+    port,
+    username,
+}: Mqtt): Promise<Server> => {
     return new Promise((resolve: (server: Server) => void): void  => {
-        const server = new Server(settings);
+        const server = new Server({
+            host,
+            port,
+        });
         server.on('ready', () => {
             server.authenticate = (client: {}, actualUsername: any, actualPassword: any, callback: any): void => {
                 const authenticated = actualUsername === username && actualPassword.toString() === password;
