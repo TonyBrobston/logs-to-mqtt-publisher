@@ -11,7 +11,7 @@ A server-side JavaScript tool that converts log statements to topics and publish
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors)
 
 ## Parameter example
-``` 
+```
 {
     logWatches: [
         {
@@ -24,7 +24,9 @@ A server-side JavaScript tool that converts log statements to topics and publish
     ],
     mqtt: {
         host: 'localhost',
-        port: '1883'
+        port: '1883',
+        username: 'broker',
+        password: 'Ypl8%Q1X#4'
     }
 }
 ```
