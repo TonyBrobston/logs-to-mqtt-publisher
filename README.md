@@ -20,6 +20,23 @@ A server-side JavaScript tool that converts log statements to topics and publish
                 '/motion|House West|start/g',
                 '/motion|House West|stop/g'
             ]
+        },
+        {
+            filePath: '/var/log/unifi-video/motion.log',
+            logParses: [
+                {
+                    topicParse: {
+                        regularExpression: '/motion|House West/g',
+                        order: [0, 1],
+                        delimiter: '/'
+                    },
+                    messageParse: {
+                        regularExpression: '/start/g',
+                        order: [0],
+                        delimiter: ''
+                    }
+                }
+            ]
         }
     ],
     mqtt: {
