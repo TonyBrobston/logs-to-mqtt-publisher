@@ -16,13 +16,6 @@ A server-side JavaScript tool that converts log statements to topics and publish
     logWatches: [
         {
             filePath: '/var/log/unifi-video/motion.log',
-            regularExpressions: [
-                '/motion|House West|start/g',
-                '/motion|House West|stop/g'
-            ]
-        },
-        {
-            filePath: '/var/log/unifi-video/motion.log',
             logParses: [
                 {
                     topicParse: {
