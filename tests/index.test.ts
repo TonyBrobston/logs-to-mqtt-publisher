@@ -3,7 +3,7 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
-import {Mqtt} from '../src/types/Options';
+import {Mqtt} from '../src/types/Mqtt';
 
 import {start, stop} from '../src/index';
 
@@ -53,15 +53,25 @@ describe('index', () => {
             const childTopic = 'childTopic1';
             const expectedTopic = `${parentTopic}/${childTopic}`;
             const expectedMessage = 'message1';
-            const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
             await client.subscribe(expectedTopic);
 
             await start({
                 logWatches: [
                     {
                         filePath,
-                        regularExpressions: [
-                            regularExpression,
+                        logParses: [
+                            {
+                                messageParse: {
+                                    delimiter: '',
+                                    order: [0],
+                                    regularExpression: `/${expectedMessage}/g`,
+                                },
+                                topicParse: {
+                                    delimiter: '/',
+                                    order: [0, 1],
+                                    regularExpression: `/${parentTopic}|${childTopic}/g`,
+                                },
+                            },
                         ],
                     },
                 ],
@@ -86,15 +96,25 @@ describe('index', () => {
             const childTopic = 'childTopic2';
             const expectedTopic = `${parentTopic}/${childTopic}`;
             const expectedMessage = 'message2';
-            const regularExpression = `/${parentTopic}|${childTopic}|${expectedMessage}/g`;
             await client.subscribe(expectedTopic);
 
             const options = {
                 logWatches: [
                     {
                         filePath,
-                        regularExpressions: [
-                            regularExpression,
+                        logParses: [
+                            {
+                                messageParse: {
+                                    delimiter: '',
+                                    order: [0],
+                                    regularExpression: `/${expectedMessage}/g`,
+                                },
+                                topicParse: {
+                                    delimiter: '/',
+                                    order: [0, 1],
+                                    regularExpression: `/${parentTopic}|${childTopic}/g`,
+                                },
+                            },
                         ],
                     },
                 ],
