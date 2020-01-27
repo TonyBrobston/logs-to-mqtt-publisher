@@ -2,10 +2,10 @@ import {AsyncMqttClient, connectAsync} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
 
-import {LogParse} from './types/LogParse';
-import {LogWatch} from './types/LogWatch';
-import {MqttPayload} from './types/MqttPayload';
-import {Options} from './types/Options';
+import LogParse from './types/LogParse';
+import LogWatch from './types/LogWatch';
+import MqttPayload from './types/MqttPayload';
+import Options from './types/Options';
 
 import {parseLog} from './services/logService';
 import {parseOptions} from './services/optionService';

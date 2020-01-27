@@ -3,7 +3,7 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
-import {Mqtt} from '../src/types/Mqtt';
+import Mqtt from '../src/types/Mqtt';
 
 import {start, stop} from '../src/index';
 

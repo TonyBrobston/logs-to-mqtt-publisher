@@ -1,7 +1,7 @@
-import {LogWatch} from '../types/LogWatch';
-import {Mqtt} from '../types/Mqtt';
+import LogWatch from '../types/LogWatch';
+import Mqtt from '../types/Mqtt';
 
-export interface Options {
+export default interface Options {
     logWatches: LogWatch[];
     mqtt: Mqtt;
 }

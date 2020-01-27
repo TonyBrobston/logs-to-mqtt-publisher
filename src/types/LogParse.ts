@@ -1,6 +1,6 @@
-import {Parse} from './Parse';
+import Parse from './Parse';
 
-export interface LogParse {
+export default interface LogParse {
     messageParse: Parse;
     topicParse: Parse;
 }

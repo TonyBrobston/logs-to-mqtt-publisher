@@ -1,6 +1,6 @@
-import {LogParse} from './../types/LogParse';
-import {MqttPayload} from './../types/MqttPayload';
-import {Parse} from './../types/Parse';
+import LogParse from './../types/LogParse';
+import MqttPayload from './../types/MqttPayload';
+import Parse from './../types/Parse';
 
 export const parseLog = (line: string, logParse: LogParse): MqttPayload => {
     const {messageParse, topicParse}: LogParse = logParse;

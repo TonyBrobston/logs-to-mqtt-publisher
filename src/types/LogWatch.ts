@@ -1,6 +1,6 @@
-import {LogParse} from './LogParse';
+import LogParse from './LogParse';
 
-export interface LogWatch {
+export default interface LogWatch {
     filePath: string;
     logParses: LogParse[];
 }

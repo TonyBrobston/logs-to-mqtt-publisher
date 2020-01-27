@@ -1,4 +1,4 @@
-export interface Parse {
+export default interface Parse {
     delimiter: string;
     order: number[];
     regularExpression: string;

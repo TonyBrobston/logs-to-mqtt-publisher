@@ -1,6 +1,6 @@
 import {parseLog} from '../../src/services/logService';
 
-import {MqttPayload} from '../../src/types/MqttPayload';
+import MqttPayload from '../../src/types/MqttPayload';
 
 describe('log service', () => {
     it('should parse', () => {
