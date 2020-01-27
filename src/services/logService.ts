@@ -27,7 +27,5 @@ const convertToRegex = (regularExpression: string): RegExp => {
 };
 
 const parseAndJoin = (found: string[], parse: Parse): string => {
-    return parse.order.map((index: number) => {
-        return found[index];
-    }).join(parse.delimiter);
+    return parse.order.map((index: number) => found[index]).join(parse.delimiter);
 };
