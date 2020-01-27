@@ -3,7 +3,31 @@ import {parseLog} from '../../src/services/logService';
 import MqttPayload from '../../src/types/MqttPayload';
 
 describe('log service', () => {
-    it('should parse', () => {
+    it('should parse simple log line out of order', () => {
+        const parentTopic = 'motion';
+        const childTopic = 'North Camera';
+        const expectedMessage = 'start';
+        const logParse = {
+            messageParse: {
+                delimiter: '',
+                order: [0],
+                regularExpression: `/${expectedMessage}/g`,
+            },
+            topicParse: {
+                delimiter: '/',
+                order: [1, 0],
+                regularExpression: `/${childTopic}|${parentTopic}/g`,
+            },
+        };
+        const line = `${expectedMessage}|${childTopic}|${parentTopic}`;
+
+        const {topic, message}: MqttPayload = parseLog(line, logParse);
+
+        expect(topic).toBe(`${parentTopic}/${childTopic}`);
+        expect(message).toBe(expectedMessage);
+    });
+
+    it('should parse complex log line', () => {
         const parentTopic = 'motion';
         const childTopic = 'North Camera';
         const expectedMessage = 'start';
