@@ -1,16 +1,19 @@
-import {MqttPayload} from './../types/MqttPayload';
+import LogParse from './../types/LogParse';
+import MqttPayload from './../types/MqttPayload';
+import Parse from './../types/Parse';
 
-export const parseLog = (line: string, regularExpression: string): MqttPayload => {
-    const found = line.match(convertToRegex(regularExpression));
+export const parseLog = (line: string, logParse: LogParse): MqttPayload => {
+    const {messageParse, topicParse}: LogParse = logParse;
+    const topicFound = line.match(convertToRegex(topicParse.regularExpression));
+    const messageFound = line.match(convertToRegex(messageParse.regularExpression));
 
-    if (found) {
-        const message = found[2];
-        const parentTopic = found[0];
-        const childTopic = found[1];
+    if (topicFound && messageFound) {
+        const topic = parseAndJoin(topicFound, topicParse);
+        const message = parseAndJoin(messageFound, messageParse);
 
         return {
             message,
-            topic: `${parentTopic}/${childTopic}`,
+            topic,
         };
     }
 
@@ -21,4 +24,8 @@ const convertToRegex = (regularExpression: string): RegExp => {
     const split = regularExpression.split('/');
 
     return new RegExp(split[1], split[2]);
+};
+
+const parseAndJoin = (found: string[], {order, delimiter}: Parse): string => {
+    return order.map((index: number) => found[index]).join(delimiter);
 };

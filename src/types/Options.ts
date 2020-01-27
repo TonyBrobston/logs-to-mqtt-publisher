@@ -1,16 +1,7 @@
-export interface Mqtt {
-    host: string;
-    port: number;
-    username?: string;
-    password?: string;
-}
+import LogWatch from '../types/LogWatch';
+import Mqtt from '../types/Mqtt';
 
-export interface LogWatch {
-    filePath: string;
-    regularExpressions: string[];
-}
-
-export interface Options {
+export default interface Options {
     logWatches: LogWatch[];
     mqtt: Mqtt;
 }
