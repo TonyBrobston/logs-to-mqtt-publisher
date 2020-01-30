@@ -2,7 +2,7 @@ import {parseLog} from '../../src/services/parseService';
 
 import MqttPayload from '../../src/types/MqttPayload';
 
-describe('log service', () => {
+describe('parse service', () => {
     it('should parse simple log line out of order', () => {
         const parentTopic = 'motion';
         const childTopic = 'North Camera';
