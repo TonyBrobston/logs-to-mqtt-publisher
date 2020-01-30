@@ -7,6 +7,7 @@ import LogWatch from './types/LogWatch';
 import MqttPayload from './types/MqttPayload';
 import Options from './types/Options';
 
+import {setupLogging} from './services/logService';
 import {parseOptions} from './services/optionService';
 import {parseLog} from './services/parseService';
 import {watchAsync} from './services/watchService';
@@ -18,6 +19,7 @@ export const start = async (
     options: Options = parseOptions(process.env.OPTIONS),
 ): Promise<void> => {
     const {
+        log,
         logWatches,
         mqtt: {
             host,
@@ -28,6 +30,9 @@ export const start = async (
     }: Options = options;
 
     client = await connectAsync(`tcp://${host}:${port}`, {username, password});
+    if (log) {
+        setupLogging(client);
+    }
 
     await Promise.all(logWatches.map(async ({
         filePath,

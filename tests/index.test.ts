@@ -56,6 +56,7 @@ describe('index', () => {
             await client.subscribe(expectedTopic);
 
             await start({
+                log: true,
                 logWatches: [
                     {
                         filePath,
@@ -99,6 +100,7 @@ describe('index', () => {
             await client.subscribe(expectedTopic);
 
             const options = {
+                log: false,
                 logWatches: [
                     {
                         filePath,
