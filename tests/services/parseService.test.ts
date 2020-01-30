@@ -1,4 +1,4 @@
-import {parseLog} from '../../src/services/logService';
+import {parseLog} from '../../src/services/parseService';
 
 import MqttPayload from '../../src/types/MqttPayload';
 
