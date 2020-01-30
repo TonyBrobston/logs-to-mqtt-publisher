@@ -1,4 +1,4 @@
-import {AsyncMqttClient, connectAsync} from 'async-mqtt';
+import {AsyncMqttClient, connect} from 'async-mqtt';
 import {Chance} from 'chance';
 import {Server} from 'mosca';
 
@@ -24,22 +24,25 @@ describe('log service', () => {
 
     beforeEach(async (done: () => void) => {
         server = await createServerAsync(mqtt);
-        client = await connectAsync(`tcp://${host}:${port}`);
+        client = await connect(`tcp://${host}:${port}`);
+
+        setupLogging(client);
+
         done();
     });
 
-    afterEach((done: () => void) => {
-        client.end();
+    afterEach(async (done: () => void) => {
+        await client.end();
         server.close();
         done();
     });
 
-    it('should call', async () => {
-        setupLogging(client);
-
+    it('should call on connect', async (done: () => void) => {
         client.on('connect', () => {
             expect(global.console.log).toHaveBeenCalledTimes(1);
             expect(global.console.log).toHaveBeenCalledWith('CONNECTED!');
+            done();
         });
     });
 });
+
