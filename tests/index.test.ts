@@ -3,6 +3,8 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
+import {createServerAsync} from './utils/moscaHelper';
+
 import Mqtt from '../src/types/Mqtt';
 
 import {start, stop} from '../src/index';
@@ -135,27 +137,3 @@ describe('index', () => {
         });
     });
 });
-
-const createServerAsync = ({
-    host,
-    password,
-    port,
-    username,
-}: Mqtt): Promise<Server> => {
-    return new Promise((resolve: (server: Server) => void): void  => {
-        const server = new Server({
-            host,
-            port,
-        });
-        server.on('ready', () => {
-            if (username && password) {
-                server.authenticate = (client: {}, actualUsername: string, actualPassword: string,
-                                       callback: (error: null, authenticated: boolean) => void): void => {
-                    const authenticated = actualUsername === username && actualPassword.toString() === password;
-                    callback(null, authenticated);
-                };
-            }
-            resolve(server);
-        });
-    });
-};
