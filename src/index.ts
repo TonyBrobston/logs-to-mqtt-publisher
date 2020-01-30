@@ -1,4 +1,4 @@
-import {AsyncMqttClient, connectAsync} from 'async-mqtt';
+import {AsyncMqttClient, connect} from 'async-mqtt';
 import {FSWatcher} from 'chokidar';
 import {read} from 'read-last-lines';
 
@@ -29,7 +29,7 @@ export const start = async (
         },
     }: Options = options;
 
-    client = await connectAsync(`tcp://${host}:${port}`, {username, password});
+    client = connect(`tcp://${host}:${port}`, {username, password});
     if (log) {
         setupLogging(client);
     }
