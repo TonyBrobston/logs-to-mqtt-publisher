@@ -3,11 +3,15 @@ import {Chance} from 'chance';
 import {closeSync, openSync, unlinkSync, writeFileSync} from 'fs';
 import {Server} from 'mosca';
 
+import {createServerAsync} from './utils/moscaHelper';
+
 import Mqtt from '../src/types/Mqtt';
 
 import {start, stop} from '../src/index';
 
 const chance = new Chance();
+
+global.console.log = jest.fn();
 
 describe('index', () => {
     const filePath = `${__dirname}/test.log`;
@@ -38,7 +42,7 @@ describe('index', () => {
     afterEach(async (done: () => void) => {
         await stop();
         unlinkSync(filePath);
-        client.end();
+        await client.end();
         server.close();
         process.env.OPTIONS = undefined;
         done();
@@ -56,6 +60,7 @@ describe('index', () => {
             await client.subscribe(expectedTopic);
 
             await start({
+                log: true,
                 logWatches: [
                     {
                         filePath,
@@ -99,6 +104,7 @@ describe('index', () => {
             await client.subscribe(expectedTopic);
 
             const options = {
+                log: false,
                 logWatches: [
                     {
                         filePath,
@@ -133,27 +139,3 @@ describe('index', () => {
         });
     });
 });
-
-const createServerAsync = ({
-    host,
-    password,
-    port,
-    username,
-}: Mqtt): Promise<Server> => {
-    return new Promise((resolve: (server: Server) => void): void  => {
-        const server = new Server({
-            host,
-            port,
-        });
-        server.on('ready', () => {
-            if (username && password) {
-                server.authenticate = (client: {}, actualUsername: string, actualPassword: string,
-                                       callback: (error: null, authenticated: boolean) => void): void => {
-                    const authenticated = actualUsername === username && actualPassword.toString() === password;
-                    callback(null, authenticated);
-                };
-            }
-            resolve(server);
-        });
-    });
-};

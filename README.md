@@ -13,6 +13,7 @@ A server-side JavaScript tool that converts log statements to topics and publish
 ## Parameter example
 ```
 {
+    log: true,
     logWatches: [
         {
             filePath: '/var/log/unifi-video/motion.log',

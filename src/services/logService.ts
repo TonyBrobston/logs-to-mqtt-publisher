@@ -1,31 +1,34 @@
-import LogParse from './../types/LogParse';
-import MqttPayload from './../types/MqttPayload';
-import Parse from './../types/Parse';
+import {AsyncMqttClient, Packet} from 'async-mqtt';
 
-export const parseLog = (line: string, logParse: LogParse): MqttPayload => {
-    const {messageParse, topicParse}: LogParse = logParse;
-    const topicFound = line.match(convertToRegex(topicParse.regularExpression));
-    const messageFound = line.match(convertToRegex(messageParse.regularExpression));
-
-    if (topicFound && messageFound) {
-        const topic = parseAndJoin(topicFound, topicParse);
-        const message = parseAndJoin(messageFound, messageParse);
-
-        return {
-            message,
-            topic,
-        };
-    }
-
-    return {};
-};
-
-const convertToRegex = (regularExpression: string): RegExp => {
-    const split = regularExpression.split('/');
-
-    return new RegExp(split[1], split[2]);
-};
-
-const parseAndJoin = (found: string[], {order, delimiter}: Parse): string => {
-    return order.map((index: number) => found[index]).join(delimiter);
+export const setupLogging = (client: AsyncMqttClient): void => {
+    client.on('connect', (connack: any) => {
+        console.log(`Connected! connack: ${JSON.stringify(connack)}`);
+    });
+    client.on('reconnect', () => {
+        console.log('Reconnected!');
+    });
+    client.on('disconnect', () => {
+        console.log('Disconnected!');
+    });
+    client.on('message', (topic: string, message: string, packet: Packet) => {
+        console.log(`Message sent! topic: ${topic}, message: ${message}, packet: ${JSON.stringify(packet)}`);
+    });
+    client.on('packetsend', (packet: Packet) => {
+        console.log(`Packet sent! packet: ${JSON.stringify(packet)}`);
+    });
+    client.on('packetreceive', (packet: Packet) => {
+        console.log(`Packet received! packet: ${JSON.stringify(packet)}`);
+    });
+    client.on('error', () => {
+        console.log('Error!');
+    });
+    client.on('offline', () => {
+        console.log('Offline!');
+    });
+    client.on('close', () => {
+        console.log('Close!');
+    });
+    client.on('end', () => {
+        console.log('End!');
+    });
 };

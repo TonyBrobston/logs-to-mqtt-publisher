@@ -1,74 +1,82 @@
-import {parseLog} from '../../src/services/logService';
+import {AsyncMqttClient, connect} from 'async-mqtt';
+import {Chance} from 'chance';
 
-import MqttPayload from '../../src/types/MqttPayload';
+import {setupLogging} from '../../src/services/logService';
+import {createServerAsync} from '../utils/moscaHelper';
+
+const chance = new Chance();
+
+global.console.log = jest.fn();
 
 describe('log service', () => {
-    it('should parse simple log line out of order', () => {
-        const parentTopic = 'motion';
-        const childTopic = 'North Camera';
-        const expectedMessage = 'start';
-        const logParse = {
-            messageParse: {
-                delimiter: '',
-                order: [0],
-                regularExpression: `/${expectedMessage}/g`,
-            },
-            topicParse: {
-                delimiter: '/',
-                order: [1, 0],
-                regularExpression: `/${childTopic}|${parentTopic}/g`,
-            },
-        };
-        const line = `${expectedMessage}|${childTopic}|${parentTopic}`;
+    let client: AsyncMqttClient;
 
-        const {topic, message}: MqttPayload = parseLog(line, logParse);
+    beforeEach(async (done: () => void) => {
+        client = {} as AsyncMqttClient;
+        client.on = jest.fn().mockImplementation((event: string, callback: (a: any, b: any, c: any) => void) => {
+            callback('param1', 'param2', 'param3');
+        });
 
-        expect(topic).toBe(`${parentTopic}/${childTopic}`);
-        expect(message).toBe(expectedMessage);
+        setupLogging(client);
+
+        done();
     });
 
-    it('should parse complex log line', () => {
-        const parentTopic = 'motion';
-        const childTopic = 'North Camera';
-        const expectedMessage = 'start';
-        const logParse = {
-            messageParse: {
-                delimiter: '',
-                order: [0],
-                regularExpression: `/${expectedMessage}/g`,
-            },
-            topicParse: {
-                delimiter: '/',
-                order: [0, 1],
-                regularExpression: `/${parentTopic}|${childTopic}/g`,
-            },
-        };
-        const line = `1577042817.781 2019-12-22 13:26:57.781/CST: INFO   [uv.analytics.${parentTopic}] [AnalyticsService] [FCECDAD8B870|${childTopic}] MotionEvent type:${expectedMessage} event:28345 clock:10377014318 in AnalyticsEvtBus-11`;
-
-        const {topic, message}: MqttPayload = parseLog(line, logParse);
-
-        expect(topic).toBe(`${parentTopic}/${childTopic}`);
-        expect(message).toBe(expectedMessage);
+    it('should call client on x times', () => {
+        expect(client.on).toHaveBeenCalledTimes(10);
     });
 
-    it('should fail to parse', () => {
-        const line = '';
-        const regularExpression = '/foo/g';
-        const logParse = {
-            messageParse: {
-                delimiter: '',
-                order: [0],
-                regularExpression: `/foo/g`,
-            },
-            topicParse: {
-                delimiter: '',
-                order: [0],
-                regularExpression: `/bar/g`,
-            },
-        };
+    it('should call console log x times', () => {
+        expect(global.console.log).toHaveBeenCalledTimes(20);
+    });
 
-        const payload: MqttPayload = parseLog(line, logParse);
+    it('should call on connect', () => {
+        expect(client.on).toHaveBeenCalledWith('connect', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Connected! connack: \"param1\"');
+    });
 
-        expect(payload).toEqual({});
+    it('should call on reconnect', () => {
+        expect(client.on).toHaveBeenCalledWith('reconnect', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Reconnected!');
+    });
+
+    it('should call on disconnect', () => {
+        expect(client.on).toHaveBeenCalledWith('disconnect', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Disconnected!');
+    });
+
+    it('should call on message', () => {
+        expect(client.on).toHaveBeenCalledWith('message', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Message sent! topic: param1, message: param2, packet: \"param3\"');
+    });
+
+    it('should call on packetsend', () => {
+        expect(client.on).toHaveBeenCalledWith('packetsend', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Packet sent! packet: \"param1\"');
+    });
+
+    it('should call on packetreceive', () => {
+        expect(client.on).toHaveBeenCalledWith('packetreceive', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Packet received! packet: \"param1\"');
+    });
+
+    it('should call on error', () => {
+        expect(client.on).toHaveBeenCalledWith('error', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Error!');
+    });
+
+    it('should call on offline', () => {
+        expect(client.on).toHaveBeenCalledWith('offline', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Offline!');
+    });
+
+    it('should call on close', () => {
+        expect(client.on).toHaveBeenCalledWith('close', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('Close!');
+    });
+
+    it('should call on end', () => {
+        expect(client.on).toHaveBeenCalledWith('end', expect.any(Function));
+        expect(global.console.log).toHaveBeenCalledWith('End!');
     });
 });
