@@ -9,7 +9,7 @@ setup_git_config() {
 }
 
 build_lib() {
-  yarn build
+  npm build
 }
 
 create_npm_version_and_publish() {
