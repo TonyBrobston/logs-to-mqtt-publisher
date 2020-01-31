@@ -42,6 +42,10 @@ A server-side JavaScript tool that converts log statements to topics and publish
 }
 ```
 
+## Documentation
+**[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*
+**[stop](docs/modules/_index_.md#const-stop)**(): *Promise‹void›*
+
 ## Feedback
 Do you have an idea for making logs-to-mqtt-publisher better? Add your idea under the issues tab, we'd love to hear about it!
 
