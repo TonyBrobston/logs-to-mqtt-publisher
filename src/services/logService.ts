@@ -19,8 +19,8 @@ export const setupLogging = (client: AsyncMqttClient): void => {
     client.on('packetreceive', (packet: Packet) => {
         console.log(`Packet received! packet: ${JSON.stringify(packet)}`);
     });
-    client.on('error', () => {
-        console.log('Error!');
+    client.on('error', (error: Error) => {
+        console.log(`Error! error: ${error}`);
     });
     client.on('offline', () => {
         console.log('Offline!');
