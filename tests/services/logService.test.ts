@@ -62,7 +62,7 @@ describe('log service', () => {
 
     it('should call on error', () => {
         expect(client.on).toHaveBeenCalledWith('error', expect.any(Function));
-        expect(global.console.log).toHaveBeenCalledWith('Error!');
+        expect(global.console.log).toHaveBeenCalledWith('Error! error: param1');
     });
 
     it('should call on offline', () => {
