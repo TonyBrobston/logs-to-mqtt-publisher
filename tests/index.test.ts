@@ -11,6 +11,8 @@ import {start, stop} from '../src/index';
 
 const chance = new Chance();
 
+global.console.log = jest.fn();
+
 describe('index', () => {
     const filePath = `${__dirname}/test.log`;
     const unauthenticatedMqtt = {
