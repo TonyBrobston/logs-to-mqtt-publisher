@@ -9,6 +9,8 @@ setup_git_config() {
 }
 
 build_lib() {
+  git checkout master
+
   npm build
 }
 
