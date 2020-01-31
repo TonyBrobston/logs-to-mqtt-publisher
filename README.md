@@ -10,7 +10,8 @@ A server-side JavaScript tool that converts log statements to topics and publish
 [![Known Vulnerabilities](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher?targetFile=package.json)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors)
 
-## Parameter example
+## Example 
+##### [Options](docs/interfaces/_types_options_.options.md)
 ```
 {
     log: true,
@@ -40,6 +41,28 @@ A server-side JavaScript tool that converts log statements to topics and publish
         password: 'Ypl8%Q1X#4'
     }
 }
+```
+
+##### docker-compose.yml
+```
+version: '3'
+  
+services:
+    home-assistant:
+        image: homeassistant/home-assistant
+        ports:
+            - 8123:8123
+
+    mqtt-broker:
+        image: eclipse-mosquitto
+
+    log-to-mqtt-publisher:
+        build:
+            context: logs-to-mqtt-publisher/.
+        volumes:
+            - /var/log/unifi-video:/private/var/log/unifi-video
+        environment:
+            - OPTIONS={"log":true,"logWatches":[{"filePath":"/var/log/unifi-video/motion.log","logParses":[{"topicParse":{"regularExpression":"/motion|House West/g","order":[0,1],"delimiter":"/"},"messageParse":{"regularExpression":"/start/g","order":[0],"delimiter":""}}]}],"mqtt":{"host":"mqtt-broker","port":"1883"}}
 ```
 
 ## Documentation
