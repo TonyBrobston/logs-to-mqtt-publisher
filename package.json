@@ -15,8 +15,7 @@
     "postversion": "git push && git push --tags",
     "start": "node -e 'require(\"./lib/index.js\").start()'",
     "test": "yarn lint:ts && yarn coverage",
-    "unit": "npx jest",
-    "version": "yarn build && git add ."
+    "unit": "npx jest"
   },
   "keywords": [
     "javascript",

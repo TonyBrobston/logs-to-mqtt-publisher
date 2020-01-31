@@ -9,9 +9,7 @@ setup_git_config() {
 }
 
 build_lib() {
-  git checkout master
-
-  npm build
+  yarn build
 }
 
 create_npm_version_and_publish() {
