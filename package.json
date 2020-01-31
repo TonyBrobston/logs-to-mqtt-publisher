@@ -10,6 +10,7 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "coverage": "jest --coverage",
+    "documentation": "typedoc --readme none --theme markdown --plugin typedoc-plugin-markdown --hideGenerator",
     "lint:ts": "tslint --fix -c tslint.json 'src/**/*.ts' 'tests/**/*.test.ts'",
     "postversion": "git push && git push --tags",
     "start": "node -e 'require(\"./lib/index.js\").start()'",
@@ -54,6 +55,8 @@
     "ts-jest": "^24.2.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.19.0",
+    "typedoc": "^0.16.9",
+    "typedoc-plugin-markdown": "^2.2.16",
     "typescript": "3.3.1"
   },
   "husky": {
