@@ -57,7 +57,7 @@
     "tslint": "^5.19.0",
     "typedoc": "^0.16.9",
     "typedoc-plugin-markdown": "^2.2.16",
-    "typescript": "^3.3.1"
+    "typescript": "^3.6.2"
   },
   "husky": {
     "hooks": {
