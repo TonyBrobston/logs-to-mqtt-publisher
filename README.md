@@ -1,5 +1,5 @@
 # logs-to-mqtt-publisher
-A server-side JavaScript tool that converts log statements to topics and publishes them to an mqtt broker.
+A server-side JavaScript tool that converts log statements to topics/messages and publishes them to an mqtt broker.
 
 [![npm version](https://badge.fury.io/js/logs-to-mqtt-publisher.svg)](https://badge.fury.io/js/logs-to-mqtt-publisher)
 [![Build Status](https://travis-ci.com/TonyBrobston/logs-to-mqtt-publisher.svg?branch=master)](https://travis-ci.com/TonyBrobston/logs-to-mqtt-publisher)
@@ -10,7 +10,7 @@ A server-side JavaScript tool that converts log statements to topics and publish
 [![Known Vulnerabilities](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher/badge.svg?targetFile=package.json)](https://snyk.io/test/github/TonyBrobston/logs-to-mqtt-publisher?targetFile=package.json)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg)](#contributors)
 
-## Example 
+## Example
 ##### [Options](docs/interfaces/_types_options_.options.md)
 ```
 {
@@ -46,7 +46,7 @@ A server-side JavaScript tool that converts log statements to topics and publish
 ##### docker-compose.yml
 ```
 version: '3'
-  
+
 services:
     home-assistant:
         image: homeassistant/home-assistant
@@ -66,7 +66,7 @@ services:
 ```
 
 ## Documentation
-**[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*  
+**[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*
 **[stop](docs/modules/_index_.md#const-stop)**(): *Promise‹void›*
 
 ## Feedback
