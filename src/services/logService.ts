@@ -1,34 +1,34 @@
-import {AsyncMqttClient} from 'async-mqtt';
+import {AsyncMqttClient, Packet} from 'async-mqtt';
 
 export const setupLogging = (client: AsyncMqttClient): void => {
-    client.on('connect', () => {
-        console.log('CONNECTED!');
+    client.on('connect', (connack: any) => {
+        console.log(`Connected! connack: ${JSON.stringify(connack)}`);
     });
     client.on('reconnect', () => {
-        console.log('RECONNECTED!');
+        console.log('Reconnected!');
     });
     client.on('disconnect', () => {
-        console.log('DISCONNECTED!');
+        console.log('Disconnected!');
     });
-    client.on('message', () => {
-        console.log('MESSAGE SENT!');
+    client.on('message', (topic: string, message: string, packet: Packet) => {
+        console.log(`Message sent! topic: ${topic}, message: ${message}, packet: ${JSON.stringify(packet)}`);
     });
-    client.on('packetreceive', () => {
-        console.log('PACKET RECEIVED!');
+    client.on('packetsend', (packet: Packet) => {
+        console.log(`Packet sent! packet: ${JSON.stringify(packet)}`);
     });
-    client.on('packetsend', () => {
-        console.log('PACKET SENT!');
+    client.on('packetreceive', (packet: Packet) => {
+        console.log(`Packet received! packet: ${JSON.stringify(packet)}`);
     });
     client.on('error', () => {
-        console.log('ERROR!');
+        console.log('Error!');
     });
     client.on('offline', () => {
-        console.log('OFFLINE!');
+        console.log('Offline!');
     });
     client.on('close', () => {
-        console.log('CLOSE!');
+        console.log('Close!');
     });
     client.on('end', () => {
-        console.log('END!');
+        console.log('End!');
     });
 };

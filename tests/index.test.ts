@@ -85,9 +85,7 @@ describe('index', () => {
 
             writeFileSync(filePath, `${parentTopic},${childTopic},${expectedMessage}`);
             client.on('message', (topic: string, message: string) => {
-                console.log('topic:', topic);
                 expect(topic).toBe(expectedTopic);
-                console.log('message:', message);
                 expect(message.toString()).toBe(expectedMessage);
                 done();
             });
