@@ -1,6 +1,6 @@
 {
   "name": "logs-to-mqtt-publisher",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A server-side JavaScript tool that converts log statements to topics and publishes them to a mqtt broker.",
   "main": "./lib/index.js",
   "repository": {
