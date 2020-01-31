@@ -66,7 +66,7 @@ services:
 ```
 
 ## Documentation
-**[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*
+**[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*  
 **[stop](docs/modules/_index_.md#const-stop)**(): *Promise‹void›*
 
 ## Feedback
