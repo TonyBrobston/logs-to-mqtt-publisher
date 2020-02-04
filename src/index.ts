@@ -55,5 +55,5 @@ export const stop = async (): Promise<void> => {
     await Promise.all(watchers.map(async (watcher: FSWatcher) => {
         await watcher.close();
     }));
-    client.end();
+    await client.end();
 };
