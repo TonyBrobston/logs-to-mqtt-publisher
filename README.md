@@ -56,11 +56,11 @@ services:
     mqtt-broker:
         image: eclipse-mosquitto
 
-    log-to-mqtt-publisher:
+    logs-to-mqtt-publisher:
         build:
             context: logs-to-mqtt-publisher/.
         volumes:
-            - /var/log/unifi-video:/private/var/log/unifi-video
+            - /var/log/unifi-video:/var/log/unifi-video
         environment:
             - OPTIONS={"log":true,"logWatches":[{"filePath":"/var/log/unifi-video/motion.log","logParses":[{"topicParse":{"regularExpression":"/motion|House West/g","order":[0,1],"delimiter":"/"},"messageParse":{"regularExpression":"/start/g","order":[0],"delimiter":""}}]}],"mqtt":{"host":"mqtt-broker","port":"1883"}}
 ```
