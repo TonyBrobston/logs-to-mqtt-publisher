@@ -56,7 +56,7 @@ services:
     mqtt-broker:
         image: eclipse-mosquitto
 
-    log-to-mqtt-publisher:
+    logs-to-mqtt-publisher:
         build:
             context: logs-to-mqtt-publisher/.
         volumes:
