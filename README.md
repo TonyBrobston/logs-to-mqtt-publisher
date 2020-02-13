@@ -60,7 +60,7 @@ services:
         volumes:
             - /var/log/unifi-video:/var/log/unifi-video
         environment:
-            - OPTIONS={"log":true,"logWatches":[{"filePath":"/var/log/unifi-video/motion.log","logParses":[{"topicParse":{"regularExpression":"/motion|House West/g",output: '{0}/{1}'},"messageParse":{"regularExpression":"/start/g",output: '{0}'}}]}],"mqtt":{"host":"mqtt-broker","port":"1883"}}
+            - OPTIONS={"log":true,"logWatches":[{"filePath":"/var/log/unifi-video/motion.log","logParses":[{"topicParse":{"regularExpression":"/motion|House West/g","output":"{0}/{1}"},"messageParse":{"regularExpression":"/start/g","output":"{0}"}}]}],"mqtt":{"host":"mqtt-broker","port":"1883"}}
 ```
 
 ## Documentation
