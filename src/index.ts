@@ -8,7 +8,7 @@ import MqttPayload from './types/MqttPayload';
 import Options from './types/Options';
 
 import {setupLogging} from './services/logService';
-import {parseOptions} from './services/optionService';
+import {getOptionsFromEnvironmentOrFile} from './services/optionService';
 import {parseLog} from './services/parseService';
 import {watchAsync} from './services/watchService';
 
@@ -16,7 +16,7 @@ let client: AsyncMqttClient;
 const watchers: FSWatcher[] = [];
 
 export const start = async (
-    options: Options = parseOptions(process.env.OPTIONS),
+    options: Options = getOptionsFromEnvironmentOrFile(),
 ): Promise<void> => {
     const {
         log,
