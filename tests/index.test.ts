@@ -15,29 +15,26 @@ global.console.log = jest.fn();
 
 describe('index', () => {
     const filePath = `${__dirname}/test.log`;
-    const unauthenticatedMqtt = {
+    const mqtt = {
         host: 'localhost',
+        password: chance.string(),
         port: chance.natural({
             max: 9999,
             min: 1000,
         }),
-    };
-    const authenticatedMqtt = {
-        ...unauthenticatedMqtt,
-        password: chance.string(),
         username: chance.string(),
     };
 
     let server: Server,
         client: AsyncMqttClient;
 
-    const before = async (mqtt: Mqtt): Promise<void> => {
+    beforeEach(async (done: () => void) => {
         server = await createServerAsync(mqtt);
         const {host, username, password, port}: Mqtt = mqtt;
-        const options = username && password ? {username, password} : {};
-        client = await connectAsync(`tcp://${host}:${port}`, options);
+        client = await connectAsync(`tcp://${host}:${port}`, {username, password});
         closeSync(openSync(filePath, 'w'));
-    };
+        done();
+    });
 
     afterEach(async (done: () => void) => {
         await stop();
@@ -49,10 +46,8 @@ describe('index', () => {
     });
 
     describe('set javascript Options variable', () => {
-        it('should subscribe to a topic on authenticated broker, watch a file, modify that file, and expect a message',
+        it('should pass in options, subscribe to a topic, watch a file, modify that file, and expect a message',
           async (done: () => void) => {
-            const mqtt = unauthenticatedMqtt;
-            await before(mqtt);
             const parentTopic = 'parentTopic1';
             const childTopic = 'childTopic1';
             const expectedTopic = `${parentTopic}/${childTopic}`;
@@ -91,10 +86,8 @@ describe('index', () => {
     });
 
     describe('set environment variables', () => {
-        it('should subscribe to a topic on an unauthenticated broker, watch a file, modify that file, and expect a message',
+        it('should get options from env, subscribe to a topic, watch a file, modify that file, and expect a message',
           async (done: () => void) => {
-            const mqtt = authenticatedMqtt;
-            await before(mqtt);
             const parentTopic = 'parentTopic2';
             const childTopic = 'childTopic2';
             const expectedTopic = `${parentTopic}/${childTopic}`;
