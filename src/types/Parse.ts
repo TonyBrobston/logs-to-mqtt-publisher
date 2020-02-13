@@ -1,5 +1,4 @@
 export default interface Parse {
-    delimiter: string;
-    order: number[];
+    output: string;
     regularExpression: string;
 }

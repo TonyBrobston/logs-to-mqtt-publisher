@@ -14,7 +14,7 @@
 
 ▸ **watchAsync**(`pathToWatch`: string): *Promise‹FSWatcher›*
 
-*Defined in [services/watchService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/services/watchService.ts#L3)*
+*Defined in [services/watchService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/services/watchService.ts#L3)*
 
 **Parameters:**
 

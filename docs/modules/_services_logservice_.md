@@ -14,7 +14,7 @@
 
 ▸ **setupLogging**(`client`: AsyncMqttClient): *void*
 
-*Defined in [services/logService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/services/logService.ts#L3)*
+*Defined in [services/logService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/services/logService.ts#L3)*
 
 **Parameters:**
 

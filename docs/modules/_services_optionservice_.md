@@ -14,7 +14,7 @@
 
 ▸ **parseOptions**(`options?`: undefined | string): *[Options](../interfaces/_types_options_.options.md)*
 
-*Defined in [services/optionService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/services/optionService.ts#L3)*
+*Defined in [services/optionService.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/services/optionService.ts#L3)*
 
 **Parameters:**
 

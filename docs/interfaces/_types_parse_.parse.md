@@ -10,25 +10,16 @@
 
 ### Properties
 
-* [delimiter](_types_parse_.parse.md#delimiter)
-* [order](_types_parse_.parse.md#order)
+* [output](_types_parse_.parse.md#output)
 * [regularExpression](_types_parse_.parse.md#regularexpression)
 
 ## Properties
 
-###  delimiter
+###  output
 
-• **delimiter**: *string*
+• **output**: *string*
 
-*Defined in [types/Parse.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Parse.ts#L2)*
-
-___
-
-###  order
-
-• **order**: *number[]*
-
-*Defined in [types/Parse.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Parse.ts#L3)*
+*Defined in [types/Parse.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Parse.ts#L2)*
 
 ___
 
@@ -36,4 +27,4 @@ ___
 
 • **regularExpression**: *string*
 
-*Defined in [types/Parse.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Parse.ts#L4)*
+*Defined in [types/Parse.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Parse.ts#L3)*

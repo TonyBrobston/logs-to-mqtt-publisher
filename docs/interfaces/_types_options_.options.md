@@ -20,7 +20,7 @@
 
 • **log**: *boolean*
 
-*Defined in [types/Options.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Options.ts#L5)*
+*Defined in [types/Options.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Options.ts#L5)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **logWatches**: *[LogWatch](_types_logwatch_.logwatch.md)[]*
 
-*Defined in [types/Options.ts:6](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Options.ts#L6)*
+*Defined in [types/Options.ts:6](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Options.ts#L6)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 • **mqtt**: *[Mqtt](_types_mqtt_.mqtt.md)*
 
-*Defined in [types/Options.ts:7](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Options.ts#L7)*
+*Defined in [types/Options.ts:7](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Options.ts#L7)*
