@@ -30,6 +30,7 @@ export const start = async (
     }: Options = options;
 
     client = connect(`tcp://${host}:${port}`, {username, password});
+
     if (log) {
         setupLogging(client);
     }
@@ -52,8 +53,6 @@ export const start = async (
 };
 
 export const stop = async (): Promise<void> => {
-    await Promise.all(watchers.map(async (watcher: FSWatcher) => {
-        await watcher.close();
-    }));
+    await Promise.all(watchers.map(async (watcher: FSWatcher) => watcher.close()));
     await client.end();
 };
