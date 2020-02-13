@@ -4,12 +4,12 @@ import Parse from './../types/Parse';
 
 export const parseLog = (line: string, logParse: LogParse): MqttPayload => {
     const {messageParse, topicParse}: LogParse = logParse;
-    const topicFound = line.match(convertToRegex(topicParse.regularExpression));
-    const messageFound = line.match(convertToRegex(messageParse.regularExpression));
+    const topicMatches = line.match(convertToRegex(topicParse.regularExpression));
+    const messageMatches = line.match(convertToRegex(messageParse.regularExpression));
 
-    if (topicFound && messageFound) {
-        const topic = parseAndJoin(topicFound, topicParse);
-        const message = parseAndJoin(messageFound, messageParse);
+    if (topicMatches && messageMatches) {
+        const message = replaceOutputWithMatches(messageMatches, messageParse.output);
+        const topic = replaceOutputWithMatches(topicMatches, topicParse.output);
 
         return {
             message,
@@ -26,6 +26,10 @@ const convertToRegex = (regularExpression: string): RegExp => {
     return new RegExp(split[1], split[2]);
 };
 
-const parseAndJoin = (found: string[], {order, delimiter}: Parse): string => {
-    return order.map((index: number) => found[index]).join(delimiter);
+const replaceOutputWithMatches = (matches: string[], output: string): string => {
+    let replacedOutput = output;
+    matches.forEach((match: string, index: number) => {
+        replacedOutput = replacedOutput.replace(`{${index}}`, match);
+    });
+    return replacedOutput;
 };

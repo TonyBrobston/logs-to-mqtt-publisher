@@ -19,7 +19,7 @@
 
 • **filePath**: *string*
 
-*Defined in [types/LogWatch.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/LogWatch.ts#L4)*
+*Defined in [types/LogWatch.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/LogWatch.ts#L4)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **logParses**: *[LogParse](_types_logparse_.logparse.md)[]*
 
-*Defined in [types/LogWatch.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/LogWatch.ts#L5)*
+*Defined in [types/LogWatch.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/LogWatch.ts#L5)*

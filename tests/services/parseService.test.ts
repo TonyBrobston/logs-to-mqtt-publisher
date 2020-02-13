@@ -9,13 +9,11 @@ describe('parse service', () => {
         const expectedMessage = 'start';
         const logParse = {
             messageParse: {
-                delimiter: '',
-                order: [0],
+                output: '{0}',
                 regularExpression: `/${expectedMessage}/g`,
             },
             topicParse: {
-                delimiter: '/',
-                order: [1, 0],
+                output: '{1}/{0}',
                 regularExpression: `/${childTopic}|${parentTopic}/g`,
             },
         };
@@ -27,19 +25,63 @@ describe('parse service', () => {
         expect(message).toBe(expectedMessage);
     });
 
+    it('should parse simple log line with topic with text in middle', () => {
+        const parentTopic = 'motion';
+        const text = 'Camera';
+        const childTopic = 'North Camera';
+        const expectedMessage = 'start';
+        const logParse = {
+            messageParse: {
+                output: '{0}',
+                regularExpression: `/${expectedMessage}/g`,
+            },
+            topicParse: {
+                output: `{1}/${text}/{0}`,
+                regularExpression: `/${childTopic}|${parentTopic}/g`,
+            },
+        };
+        const line = `${expectedMessage}|${childTopic}|${parentTopic}`;
+
+        const {topic, message}: MqttPayload = parseLog(line, logParse);
+
+        expect(topic).toBe(`${parentTopic}/${text}/${childTopic}`);
+        expect(message).toBe(expectedMessage);
+    });
+
+    it('should parse simple log line with topic with only text', () => {
+        const parentTopic = 'motion';
+        const text = 'SomeRandomText';
+        const childTopic = 'North Camera';
+        const expectedMessage = 'start';
+        const logParse = {
+            messageParse: {
+                output: '{0}',
+                regularExpression: `/${expectedMessage}/g`,
+            },
+            topicParse: {
+                output: text,
+                regularExpression: `/${childTopic}|${parentTopic}/g`,
+            },
+        };
+        const line = `${expectedMessage}|${childTopic}|${parentTopic}`;
+
+        const {topic, message}: MqttPayload = parseLog(line, logParse);
+
+        expect(topic).toBe(text);
+        expect(message).toBe(expectedMessage);
+    });
+
     it('should parse complex log line', () => {
         const parentTopic = 'motion';
         const childTopic = 'North Camera';
         const expectedMessage = 'start';
         const logParse = {
             messageParse: {
-                delimiter: '',
-                order: [0],
+                output: '{0}',
                 regularExpression: `/${expectedMessage}/g`,
             },
             topicParse: {
-                delimiter: '/',
-                order: [0, 1],
+                output: '{0}/{1}',
                 regularExpression: `/${parentTopic}|${childTopic}/g`,
             },
         };
@@ -56,13 +98,11 @@ describe('parse service', () => {
         const regularExpression = '/foo/g';
         const logParse = {
             messageParse: {
-                delimiter: '',
-                order: [0],
+                output: '{0}',
                 regularExpression: `/foo/g`,
             },
             topicParse: {
-                delimiter: '',
-                order: [0],
+                output: '{0}',
                 regularExpression: `/bar/g`,
             },
         };

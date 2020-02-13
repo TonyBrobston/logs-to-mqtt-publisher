@@ -21,7 +21,7 @@
 
 • **host**: *string*
 
-*Defined in [types/Mqtt.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Mqtt.ts#L2)*
+*Defined in [types/Mqtt.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Mqtt.ts#L2)*
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 • **password**? : *undefined | string*
 
-*Defined in [types/Mqtt.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Mqtt.ts#L5)*
+*Defined in [types/Mqtt.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Mqtt.ts#L5)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **port**: *number*
 
-*Defined in [types/Mqtt.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Mqtt.ts#L3)*
+*Defined in [types/Mqtt.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Mqtt.ts#L3)*
 
 ___
 
@@ -45,4 +45,4 @@ ___
 
 • **username**? : *undefined | string*
 
-*Defined in [types/Mqtt.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/Mqtt.ts#L4)*
+*Defined in [types/Mqtt.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/Mqtt.ts#L4)*

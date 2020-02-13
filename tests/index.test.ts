@@ -67,13 +67,11 @@ describe('index', () => {
                         logParses: [
                             {
                                 messageParse: {
-                                    delimiter: '',
-                                    order: [0],
+                                    output: '{0}',
                                     regularExpression: `/${expectedMessage}/g`,
                                 },
                                 topicParse: {
-                                    delimiter: '/',
-                                    order: [0, 1],
+                                    output: '{0}/{1}',
                                     regularExpression: `/${parentTopic}|${childTopic}/g`,
                                 },
                             },
@@ -111,13 +109,11 @@ describe('index', () => {
                         logParses: [
                             {
                                 messageParse: {
-                                    delimiter: '',
-                                    order: [0],
+                                    output: '{0}',
                                     regularExpression: `/${expectedMessage}/g`,
                                 },
                                 topicParse: {
-                                    delimiter: '/',
-                                    order: [0, 1],
+                                    output: '{0}/{1}',
                                     regularExpression: `/${parentTopic}|${childTopic}/g`,
                                 },
                             },

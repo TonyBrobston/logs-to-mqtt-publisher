@@ -20,7 +20,7 @@
 
 • **client**: *AsyncMqttClient*
 
-*Defined in [index.ts:15](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/index.ts#L15)*
+*Defined in [index.ts:15](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/index.ts#L15)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **watchers**: *FSWatcher[]* = []
 
-*Defined in [index.ts:16](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/index.ts#L16)*
+*Defined in [index.ts:16](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/index.ts#L16)*
 
 ## Functions
 
@@ -36,7 +36,7 @@ ___
 
 ▸ **start**(`options`: [Options](../interfaces/_types_options_.options.md)): *Promise‹void›*
 
-*Defined in [index.ts:18](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/index.ts#L18)*
+*Defined in [index.ts:18](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/index.ts#L18)*
 
 **Parameters:**
 
@@ -52,6 +52,6 @@ ___
 
 ▸ **stop**(): *Promise‹void›*
 
-*Defined in [index.ts:54](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/index.ts#L54)*
+*Defined in [index.ts:54](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/index.ts#L54)*
 
 **Returns:** *Promise‹void›*

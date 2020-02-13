@@ -19,7 +19,7 @@
 
 • **messageParse**: *[Parse](_types_parse_.parse.md)*
 
-*Defined in [types/LogParse.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/LogParse.ts#L4)*
+*Defined in [types/LogParse.ts:4](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/LogParse.ts#L4)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **topicParse**: *[Parse](_types_parse_.parse.md)*
 
-*Defined in [types/LogParse.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/LogParse.ts#L5)*
+*Defined in [types/LogParse.ts:5](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/LogParse.ts#L5)*

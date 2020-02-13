@@ -19,7 +19,7 @@
 
 • **message**? : *undefined | string*
 
-*Defined in [types/MqttPayload.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/MqttPayload.ts#L3)*
+*Defined in [types/MqttPayload.ts:3](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/MqttPayload.ts#L3)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **topic**? : *undefined | string*
 
-*Defined in [types/MqttPayload.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/195afce/src/types/MqttPayload.ts#L2)*
+*Defined in [types/MqttPayload.ts:2](https://github.com/TonyBrobston/logs-to-mqtt-publisher/blob/36765fa/src/types/MqttPayload.ts#L2)*
