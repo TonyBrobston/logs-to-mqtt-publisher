@@ -1,5 +1,5 @@
 # logs-to-mqtt-publisher
-A server-side JavaScript tool that converts log statements to topics/messages and publishes them to an mqtt broker.
+A server-side JavaScript tool that converts log statements to topics/messages and publishes them to an mqtt broker. This is intended to be used in docker, but could be consumed as an npm package.
 
 [![npm version](https://badge.fury.io/js/logs-to-mqtt-publisher.svg)](https://badge.fury.io/js/logs-to-mqtt-publisher)
 [![Build Status](https://travis-ci.com/TonyBrobston/logs-to-mqtt-publisher.svg?branch=master)](https://travis-ci.com/TonyBrobston/logs-to-mqtt-publisher)
@@ -41,27 +41,8 @@ A server-side JavaScript tool that converts log statements to topics/messages an
 }
 ```
 
-##### docker-compose.yml
-```
-version: '3'
-
-services:
-    home-assistant:
-        image: homeassistant/home-assistant
-        ports:
-            - 8123:8123
-
-    mqtt-broker:
-        image: eclipse-mosquitto
-
-    logs-to-mqtt-publisher:
-        build:
-            context: logs-to-mqtt-publisher/.
-        volumes:
-            - /var/log/unifi-video:/var/log/unifi-video
-        environment:
-            - OPTIONS={"log":true,"logWatches":[{"filePath":"/var/log/unifi-video/motion.log","logParses":[{"topicParse":{"regularExpression":"/motion|House West/g","output":"{0}/{1}"},"messageParse":{"regularExpression":"/start/g","output":"{0}"}}]}],"mqtt":{"host":"mqtt-broker","port":"1883"}}
-```
+##### docker-compose.yaml
+Repository example: https://github.com/TonyBrobston/unifi-video-publisher-example
 
 ## Documentation
 **[start](docs/modules/_index_.md#const-start)**(`options`: [Options](docs/interfaces/_types_options_.options.md)): *Promise‹void›*  
