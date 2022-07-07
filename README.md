@@ -52,7 +52,6 @@ Repository example: https://github.com/TonyBrobston/unifi-video-publisher-exampl
 Do you have an idea for making logs-to-mqtt-publisher better? Add your idea under the issues tab, we'd love to hear about it!
 
 ## Contributors
-Thanks goes to these wonderful people:
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
